@@ -1,0 +1,13 @@
+{
+    "name": "asuwebpplatforms/webspark-module-asu_brand",
+    "description": "ASU Header component and brand assets.",
+    "type": "drupal-module",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Michael Samuelson",
+            "email": "mlsamuel@asu.edu"
+        }
+    ],
+    "require": {}
+}
