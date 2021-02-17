@@ -1,0 +1,11 @@
+8.x-1.0-beta2, 2019-10-07
+-----------------------
+- Set brand header v4.8 as default
+
+
+8.x-1.0-beta1, 2017-05-09??
+-----------------------
+- Drupal 8 port.
+- The ability to switch between header versions was purposely removed in favor
+  of releasing a new module update anytime a stable ASU Header version becomes
+  available.

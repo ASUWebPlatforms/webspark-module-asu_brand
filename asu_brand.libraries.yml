@@ -1,0 +1,6 @@
+header:
+  version: 1.0
+  header: true
+  js:
+    '/node_modules/@asu-design-system/components-library/dist/vendor.js': {}
+    '/node_modules/@asu-design-system/components-library/dist/components-library.js': {}
