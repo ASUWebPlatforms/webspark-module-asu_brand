@@ -1,5 +1,11 @@
 {
+  "name": "asu_brand",
+  "version": "1.0.0",
+  "description": "ASU Brand header with bundled cookie consent.",
+  "main": "index.js",
+  "author": "Michael Samuelson",
+  "license": "MIT",
   "dependencies": {
-    "@asu-design-system/components-library": "^1.1.14"
+    "@asu-design-system/components-library": "^1.3.1"
   }
 }

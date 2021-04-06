@@ -9,5 +9,6 @@
             "email": "mlsamuel@asu.edu"
         }
     ],
-    "require": {}
+    "require": {},
+    "version": "1.0.0"
 }

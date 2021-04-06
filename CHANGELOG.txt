@@ -1,11 +1,3 @@
-8.x-1.0-beta2, 2019-10-07
+9.x-1.0-alpha, 2021-04-19
 -----------------------
-- Set brand header v4.8 as default
-
-
-8.x-1.0-beta1, 2017-05-09??
------------------------
-- Drupal 8 port.
-- The ability to switch between header versions was purposely removed in favor
-  of releasing a new module update anytime a stable ASU Header version becomes
-  available.
+- Alpha release of ASU Brand header module with GTM and Cookie Consent bundled.

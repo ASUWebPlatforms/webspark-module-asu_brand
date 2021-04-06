@@ -1,109 +1,182 @@
 <?php
 
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Component\Utility\Html;
+
 /**
  * @file
- * Contains asu_brand.module.
+ * ASU Brand header, cookie consent and Google Tag Manager.
  */
-
-use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Header default version
+ * Implments hook_entity_base_field_info().
+ *
+ * Add custom fields to content menu links for use by header.
  */
-const ASU_BRAND_HEADER_VERSION_DEFAULT = '4.8';
+function asu_brand_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'menu_link_content') {
 
-/**
- * URL Basepath
- */
-const ASU_BRAND_HEADER_BASEPATH_DEFAULT = 'http://www.asu.edu/asuthemes';
+    // TODO Use form alter (below) to make these fields present better and add
+    // form states api logic for the button color control and maybe to hide the
+    // "Show as expanded" field if this field is a header block menu, since
+    // we don't consult that setting.
 
-/**
- * Default template name
- */
-const ASU_BRAND_HEADER_TEMPLATE_DEFAULT = 'default';
+    // Menu link type
+    $fields['menu_link_asu_brand_link_type'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t('ASU Brand menu link type'))
+      ->setDescription(t('This setting only applies if this link is used in the ASU Brand header as a second level menu link. Note: top level call to action buttons are configured in the header block.'))
+      ->setSettings([
+        'allowed_values' => [
+          //'icon' => 'Icon', // TODO First link becomes icon. not allowing select for this now.
+          'heading' => 'Heading - starts a column',
+          'button' => 'Button - within column',
+        ],
+      ])
+      ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 50]);
 
-/**
- * Default cache lifetime is 48 Hours ( 60 x 60 x 48 )
- */
-const ASU_BRAND_CACHE_LIFETIME = '172800';
+    // Class - TODO only used for icons, specifically Home icon, so not needed as long as icon isn't a selection above.
+    // $fields['menu_link_asu_brand_link_class'] = BaseFieldDefinition::create('string')
+    //   ->setLabel(t('ASU Brand menu link class'))
+    //   ->setDescription(t('For home icons, set to "home" and ensure the ASU Brand menu link type is set to "Icon."'))
+    //   ->setDisplayOptions('form', ['type' => 'string', 'weight' => 51]);
 
-/**
- * Default machine name of site menu to inject into the responsive header menu
- */
-const ASU_BRAND_SITE_MENU_NAME_DEFAULT = 'main';
+    // Is button
+    $fields['menu_link_asu_brand_link_is_button'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Display as ASU Brand button in dropdown tray'))
+      ->setDescription(t('Only applies if menu link is in the second level in the ASU Brand header. Button will appear below dropdown columns.'))
+      ->setDisplayOptions('form', ['type' => 'string', 'weight' => 52]);
 
-/**
- * Google Tag Manager ID
- */
-const ASU_BRAND_GTM_ID = 'GTM-KDWN8Z';
+    // Button color
+    $fields['menu_link_asu_brand_link_button_color'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t('ASU Brand dropdown tray button color'))
+      ->setDescription(t('Only applies if used in the ASU Brand header and menu link is a dropdown tray button.'))
+      ->setSettings([
+        'allowed_values' => [
+          'gold' => 'Gold',
+          'maroon' => 'Maroon',
+          'light' => 'Light gray',
+        ],
+      ])
+      ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 53]);
 
-/**
- * Implements hook_help().
- */
-function asu_brand_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the asu_brand module.
-    case 'help.page.asu_brand':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Provides ASU header and footer blocks without the use of an ASU based theme.') . '</p>';
-      return $output;
-
-    default:
+    return $fields;
   }
 }
 
 /**
- * Implements hook_theme().
+ * Implements hook_form_alter().
  */
-function asu_brand_theme($existing, $type, $theme, $path) {
-  return [
-    'header' => [
-      'variables' => ['nav' => NULL],
-    ],
-  ];
+function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+  // Header block form tweaks.
+  if ($form_id === 'block_form' && $form['settings']['provider']['#value'] === "asu_brand") {
+    // Minor UX improvements
+    $form['settings']['label']['#title'] = t("Block admin title");
+    $form['settings']['label_display']['#title'] = t("Display block admin title");
+    $form['settings']['label_display']['#default_value'] = FALSE;
+    $form['settings']['label_display']['#description'] = t("For the ASU header, you do not want to display the block admin title to visitors.");
+  }
+
+  // Menu link edit forms for system and content links.
+  if (
+    $form_id === "menu_link_edit" ||
+    $form_id === "menu_link_content_menu_link_content_form"
+  ) {
+
+    //dpm($form);
+
+  }
 }
 
 /**
  * Implements hook_page_top().
+ *
+ * Adds ASU Google Tag Manager
  */
-function asu_brand_page_top(&$page) {
-  $content = '';
+function asu_brand_page_top(array &$page_top) {
 
-  $current_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $config = \Drupal::config('asu_brand.settings');
+  // ASU Universal GTM ID is stored in settings, but not updatable through UI.
+  $asu_gtm = $config->get('asu_brand.asu_brand_universal_gtm_id');
+  $gtm_enabled = $config->get('asu_brand.asu_brand_gtm_enabled');
+  $extra_gtm = $config->get('asu_brand.asu_brand_extra_gtm_id');
 
-  $blocks = \Drupal::entityTypeManager()
-    ->getStorage('block')
-    ->loadByProperties(['plugin' => 'asu_brand_header', 'theme' => $current_theme->getName()]);
+  // TODO Show on admin or not? Currently inserted everwhere. Uncomment to
+  //   avoid adding on admin pages...
+  // Only insert inline GTMs for on-admin routes.
+  //if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
 
-  foreach ($blocks as $id=>$block) {
+  // Insert ASU Universal GTM
+  if ($gtm_enabled) {
 
-    $settings = $block->get('settings');
+    $asu_universal_gtm = $asu_gtm;
+    $gtm_snippet = _asu_brand_gtm_snippet($asu_universal_gtm);
 
-    // Add noscript snippets to page_top region.
-    if ($settings['asu_gtm']) {
-      $content .= '<noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . ASU_BRAND_GTM_ID .
-        '"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>';
-    }
+    // We insert the JS inline with the HTML due to load time needs. Turns
+    // out that's not super easy in D9. But the following works. For discussion
+    // of options for inline JS in D8+ see
+    // https://dev.to/gapple/inline-javascript-in-drupal-8-4o28 and for
+    // preserving all markup, use #children instead of #markup.
+    // https://drupal.stackexchange.com/questions/184963/pass-raw-html-to-markup
+    // Avoiding sanitization isn't ideal, but because the markup inserted
+    // originates in this module, and the only user supplied bit is the
+    // GTM ID, which we sanitize, we're considering this acceptable. See
+    // _asu_brand_gtm_snippet().
 
-    if ($settings['custom_gtm']) {
-      $custom_gtm_id = $settings['custom_gtm_id'];
-      $content .= '<noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $custom_gtm_id .
-        '"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>';
-    }
-
-  }
-
-  // Render iframes as close to the opening body tag as possible.
-  if ($content) {
-    $page['asu_brand_gtm_code'] = [
-      '#type' => 'inline_template',
-      '#template' => '{{ html | raw }}',
-      '#context' => [
-        'html' => $content
-      ],
-      '#weight' => -100,
+    // Add GTM snippet to page_top render array as #children which is assumed
+    // to be a string of already rendered markup.
+    $page_top['asu_brand_universal_gtm'] = [
+      '#children' => $gtm_snippet,
+      // Alternatively, but strips style attribute and possibly more:
+      //'#markup' => $gtm_snippet,
+      //'#allowed_tags' => ['script', 'noscript', 'iframe'],
     ];
   }
+
+  // Extra GTM
+  if ($extra_gtm) {
+
+    $extra_gtm_snippet = _asu_brand_gtm_snippet($extra_gtm);
+
+    // Add to page_top render array as #markup with allowed tags defined to
+    // avoid sanitization of snippet on render.
+    $page_top['asu_brand_extra_gtm'] = [
+      '#children' => $extra_gtm_snippet,
+      // Alternatively, but strips style attribute and possibly more:
+      //'#markup' => $extra_gtm_snippet,
+      //'#allowed_tags' => ['script', 'noscript', 'iframe'],
+    ];
+  }
+  //}
 }
 
+/**
+ * Internal helper function to return a GTM snippet with GTM ID embedded.
+ */
+function _asu_brand_gtm_snippet($gtm_id) {
+
+  // Santize GTM ID. Secure code high-five!
+  $gtm_id = HTML::escape($gtm_id);
+
+  // Note: IF the following is added via #markup in the render array, code
+  // comments and style attributes get stripped and for a11y we'd have to
+  // add in style rules for the noscript iframe. We avoid that using
+  // #children in the render array. It's important that any code here is
+  // owned 100% by this module OR sanitized, as we've done with the $gtm_id.
+
+  $gtm_snippet = <<<EOT
+
+    <!-- Google Tag Manager - $gtm_id -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','$gtm_id');</script>
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=$gtm_id"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager - $gtm_id -->
+
+EOT;
+  return $gtm_snippet;
+}
