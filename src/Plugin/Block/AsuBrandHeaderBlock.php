@@ -43,20 +43,22 @@ class AsuBrandHeaderBlock extends BlockBase {
     $props['logoutLink'] = $config['asu_brand_header_block_logout_path'];
     // TODO Further refine? There are styling issues w buttons IN the component.
     //      For now, we hardcode the colors that look best.
-    $props['buttons'] = [
-      [
+    if ($config['asu_brand_header_block_cta1_url']) {
+      $props['buttons'][] = [
         "href" => $config['asu_brand_header_block_cta1_url'],
         "text" => $config['asu_brand_header_block_cta1_label'],
         //"size" => "medium",
         "color" => "gold"
-      ],
-      [
+      ];
+    }
+    if ($config['asu_brand_header_block_cta2_url']) {
+      $props['buttons'][] = [
         "href" => $config['asu_brand_header_block_cta2_url'],
         "text" => $config['asu_brand_header_block_cta2_label'],
         //"size" => "medium",
         "color" => "light"
-      ]
-    ];
+      ];
+    }
 
     // Override component's default behavior for logged in/out detection to
     // rely on Drupal instead, via passing in props.
