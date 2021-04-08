@@ -16,10 +16,10 @@ use Drupal\Component\Utility\Html;
 function asu_brand_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
   if ($entity_type->id() === 'menu_link_content') {
 
-    // TODO Use form alter (below) to make these fields present better and add
-    // form states api logic for the button color control and maybe to hide the
-    // "Show as expanded" field if this field is a header block menu, since
-    // we don't consult that setting.
+    // TODO Future impreoment: Use form alter (below) to make these fields
+    // present better and add form states api logic for the button color
+    // control and maybe to hide the "Show as expanded" field if this field is
+    // a header block menu, since we don't consult that setting.
 
     // Menu link type
     $fields['menu_link_asu_brand_link_type'] = BaseFieldDefinition::create('list_string')
@@ -27,18 +27,12 @@ function asu_brand_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterfac
       ->setDescription(t('This setting only applies if this link is used in the ASU Brand header as a second level menu link. Note: top level call to action buttons are configured in the header block.'))
       ->setSettings([
         'allowed_values' => [
-          //'icon' => 'Icon', // TODO First link becomes icon. not allowing select for this now.
+          //'icon' => 'Icon', // First link always becomes icon. Not allowing select for this.
           'heading' => 'Heading - starts a column',
           'button' => 'Button - within column',
         ],
       ])
       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 50]);
-
-    // Class - TODO only used for icons, specifically Home icon, so not needed as long as icon isn't a selection above.
-    // $fields['menu_link_asu_brand_link_class'] = BaseFieldDefinition::create('string')
-    //   ->setLabel(t('ASU Brand menu link class'))
-    //   ->setDescription(t('For home icons, set to "home" and ensure the ASU Brand menu link type is set to "Icon."'))
-    //   ->setDisplayOptions('form', ['type' => 'string', 'weight' => 51]);
 
     // Is button
     $fields['menu_link_asu_brand_link_is_button'] = BaseFieldDefinition::create('boolean')
@@ -102,7 +96,7 @@ function asu_brand_page_top(array &$page_top) {
   $extra_gtm = $config->get('asu_brand.asu_brand_extra_gtm_id');
 
   // TODO Show on admin or not? Currently inserted everwhere. Uncomment to
-  //   avoid adding on admin pages...
+  //   avoid adding on admin pages. TBD in the future.
   // Only insert inline GTMs for on-admin routes.
   //if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
 

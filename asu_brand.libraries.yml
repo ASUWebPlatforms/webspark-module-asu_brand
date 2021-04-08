@@ -9,4 +9,5 @@ components-library:
     node_modules/@asu-design-system/components-library/dist/components-library.js: {}
     js/asu_brand.header.js: {}
   css:
-    css/asu_brand.header.css: {}
+    component:
+      css/asu_brand.header.css: {}

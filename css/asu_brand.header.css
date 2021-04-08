@@ -1,6 +1,41 @@
-#headerContainer header {
-  top:80px;
+/*
+  Header style rules related to Drupal toolbar module. Depends on code and
+  classes applied through js/asu_brand.header.js.
+*/
+
+/* If #toolbar_administration our js adds asu_brand-toolbar-*-compat classed */
+#headerContainer.asu-brand-toolbar-header-tray-open-compat header {
+  top:79px;
 }
-body {
-  padding-top: 200px;
+#headerContainer.asu-brand-toolbar-header-tray-closed-compat header {
+  top:39px;
+}
+body.toolbar-horizontal.toolbar-tray-open {
+  padding-top:237px !important;
+}
+body.toolbar-horizontal {
+  padding-top:199px !important;
+}
+/* vertical variations */
+#headerContainer.asu-brand-toolbar-header-tray-open-compat-vertical header,
+#headerContainer.asu-brand-toolbar-header-tray-closed-compat-vertical header {
+  top:39px;
+}
+body.toolbar-vertical,
+body.toolbar-vertical.toolbar-tray-open {
+  /* TODO Identify mechanism to differentiate between when user toggles
+    toolbar to vertical while on desktop vs. when the breakpoint automatically
+    toggles toolbar to vertical for mobile. Ideally, we would be able to
+    target the two independently. The following commented line value would be
+    the adjustment to use for for the breakpoint change. At current, since this
+    applies in both cases, we use the larger option which means there's a
+    bit of extra padding-top on the body when the vertical toolbar is used on
+    mobile. Not a public-user facing issue, so leaving for future
+    improvement. */
+  /*padding-top:158px !important; /* less padding because toolbar transition occurs with breakpoint/mobile menu */
+  padding-top: 199px !important;
+}
+
+#toolbar-administration .toolbar-tray-vertical nav.toolbar-lining {
+  padding-top:158px;
 }

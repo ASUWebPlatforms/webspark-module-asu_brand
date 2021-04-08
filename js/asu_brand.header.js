@@ -1,10 +1,19 @@
 (function ($, Drupal, drupalSettings) {
-  // Not using behaviors for this.
-  // Drupal.behaviors.AsuBrandHeaderBehavior = {
-  //   attach: function (context, settings) {
-  //     console.log('AsuBrandHeaderBehavior happened');
-  //   }
-  // };
+  // Not using behaviors for most of this.
+  Drupal.behaviors.AsuBrandHeaderBehavior = {
+    attach: function (context, settings) {
+
+      // If toolbar detected, add compatibilty classes for spacing.
+      if (document.body.classList.contains('toolbar-fixed')) {
+        var headerElement = document.getElementById("headerContainer");
+        if (headerElement) {
+          headerElement.classList.add("asu-brand-toolbar-header-tray-open-compat");
+        }
+      }
+      // For related functionality, see mutationObserver below.
+
+    }
+  };
 
   // Probably don't want this inside the behavior. Fire once and be done!
   // Get config values passed in from AsuBrandHeaderBlock.php
@@ -35,6 +44,61 @@
     }
   }
 
+  // Setup a mutation observer and watch body class attributes so we can base
+  // header toolbar spacing compatibility classes on that.
+  // Ref: https://www.seanmcp.com/articles/event-listener-for-class-change/
+  function mutationCallback(mutationsList) {
+    mutationsList.forEach(mutation => {
+      if (mutation.attributeName === 'class') {
+        //console.log(mutation, 'mutation');
+
+        // A class change happened on the body tag. If the header is on the
+        // page, check if the class change was made by a toolbar change and
+        // apply our CSS class names to adapt dynamically if so.
+
+        var headerElement = document.getElementById("headerContainer");
+        if (headerElement) {
+          var classSuffix = "";
+          var vertSuffix = "-vertical";
+          // Check if we need to modify classSuffix for vertical tray rules.
+          if (document.body.classList.contains('toolbar-vertical')) {
+            classSuffix = vertSuffix; // "-vertical"
+          }
+          else {
+            classSuffix = ""; // reset
+          }
+          // Set open state class
+          if (document.body.classList.contains('toolbar-tray-open')) {
+              // Always clean up everything first.
+              headerElement.classList.remove("asu-brand-toolbar-header-tray-closed-compat" + vertSuffix);
+              headerElement.classList.remove("asu-brand-toolbar-header-tray-closed-compat");
+              headerElement.classList.remove("asu-brand-toolbar-header-tray-open-compat" + vertSuffix);
+              headerElement.classList.remove("asu-brand-toolbar-header-tray-open-compat");
+              // Set for current state.
+              headerElement.classList.add("asu-brand-toolbar-header-tray-open-compat" + classSuffix);
+          }
+          // Set closed state class
+          else {
+            // Always clean up everything.
+            headerElement.classList.remove("asu-brand-toolbar-header-tray-open-compat" + vertSuffix);
+            headerElement.classList.remove("asu-brand-toolbar-header-tray-open-compat");
+            headerElement.classList.remove("asu-brand-toolbar-header-tray-closed-compat" + vertSuffix);
+            headerElement.classList.remove("asu-brand-toolbar-header-tray-closed-compat");
+            // Set for current state.
+            headerElement.classList.add("asu-brand-toolbar-header-tray-closed-compat" + classSuffix);
+          }
+        }
+
+      }
+    })
+  }
+  var mutationObserver = new MutationObserver(mutationCallback);
+  mutationObserver.observe( document.body, { attributes: true } );
+
+
+  // TODO If needed: update the CAS URL to append return path to sign in:
+  // '?destination=' + window.location.pathname
+
   // Initialize the asu_brand components-library header.
   componentsLibrary.initHeader(props);
 
@@ -47,5 +111,5 @@
   // })
 
 // TODO Without jQuery, we get Uncaught ReferenceError: jQuery is not defined.
-// Something must be calling it. Get this working without jQuery.
+// Is it required by Drupal or drupalSettings? Would like it working w/o jQuery.
 })(jQuery, Drupal, drupalSettings);

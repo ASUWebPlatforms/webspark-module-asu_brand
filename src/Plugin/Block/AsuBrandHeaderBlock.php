@@ -407,9 +407,9 @@ class AsuBrandHeaderBlock extends BlockBase {
 
 /* DEV NOTES
 
-TODO handle selected (active menu item)
-TODO Menu handling limits depth to 2 for us. Matches standard. Document in UI.
+TODO Add Cookie Consent
 TODO Create improvement ticket for admin UI: Capture ideas
+  - menu handling limits depth to 2 for us. Matches standard. Document in UI.
   - add menu configs column to menu list adming table showing link item settings
   - js not working without including jQuery, which is unused... drupalSettings or Drupal js libs' dependency maybe?
 
@@ -419,7 +419,6 @@ TODO add a test (see other asu_brand for example) - confirm:
   - menu items at lower levels don't show
   - menu features display
   - login link matches login status
-TODO Add Cookie Consent
 
 Sample Props and navTree structures
 See Storybook Knobs:

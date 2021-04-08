@@ -68,8 +68,12 @@ Only header menu links at the top and second level are displayed in the header.
 ## Other configurations
 Global configurations related to GTM and Cookie Consent are found at the
 following click path: Admin -> Configuration -> ASU Brand settings.
-
 ## Header assets
 Previous version of the ASU Brand header loaded the header from external
 sources. The Webspark 2 version of the module, now ships with all header assets
 from the Unity Design System "components-library" header component onboard.
+## A note about toolbar menus
+The ASU Brand header is designed to work with the Drupal core toolbar menu used
+to provide administrative system links. A popular Drupal module, the Admin
+Toolbar, which provides dropdown menus from the toolbar, is not currently
+supported.

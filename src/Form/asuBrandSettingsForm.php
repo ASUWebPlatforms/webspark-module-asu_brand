@@ -49,22 +49,7 @@ class AsuBrandSettingsForm extends ConfigFormBase {
     // Loads admin settings for this form/module.
     $config = $this->config(static::SETTINGS);
 
-    // You gotta give props to our Components Library Header! No, literally:
-    // navTree - automatically built by this module, based on menu injection flag and asu_component_header_sitemenu_name settings.
-    // title - implemented as asu_component_header_title setting.
-    // baseUrl - implemented, derived from Drupal settings.
-    // parentOrg - implemented as asu_component_header_parent_org setting.
-    // parentOrgUrl - implemented as asu_component_header_parent_org_url setting.
-    // logo - TODO HOLD for future, to support partner logos?
-    // loggedIn - relies on default component behavior + details from us
-    // userName - relies on default component behavior + details from us
-    // loginLink - TODO
-    // logoutLink - TODO
-    // buttons - TODO HOLD for future dev.
-    // breakpoint - relies on default component behavior
-    // animateTitle - relies on default component behavior
-
-    //dpm($config);
+    // Note: asu_brand module provides both global and per-block configs.
 
     // Global configs
 
