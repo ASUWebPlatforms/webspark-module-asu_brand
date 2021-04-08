@@ -38,6 +38,7 @@ class AsuBrandHeaderBlock extends BlockBase {
     $props['title'] = $config['asu_brand_header_block_title'];
     $props['parentOrg'] = $config['asu_brand_header_block_parent_org'];
     $props['parentOrgUrl'] = $config['asu_brand_header_block_parent_org_url'];
+    $props['expandOnHover'] = $config['asu_brand_header_block_expand_on_hover'];
     $props['loginLink'] = $config['asu_brand_header_block_login_path'];
     $props['logoutLink'] = $config['asu_brand_header_block_logout_path'];
     // TODO Further refine? There are styling issues w buttons IN the component.
@@ -180,6 +181,21 @@ class AsuBrandHeaderBlock extends BlockBase {
         ),
       ),
     ];
+    $form['asu_brand_header_block_expand_on_hover'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Expand on hover'),
+      '#description' => $this->t('If enabled, menu dropdowns will expand on hover. Allows for top-level menu items with children to be clickable as navigation destinations.'),
+      '#default_value' => isset($config['asu_brand_header_block_expand_on_hover']) ?
+        $config['asu_brand_header_block_expand_on_hover'] : 0,
+      '#states' => array(
+        // Display this field when the menu is enabled.
+        'visible' => array(
+          ':input[name="settings[asu_brand_header_block_menu_enabled]"]' => array(
+            'checked' => TRUE,
+          ),
+        ),
+      ),
+    ];
     $form['asu_brand_header_block_login_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Login path'),
@@ -260,6 +276,8 @@ class AsuBrandHeaderBlock extends BlockBase {
       $values['asu_brand_header_block_menu_enabled'];
     $this->configuration['asu_brand_header_block_menu_name'] =
       $values['asu_brand_header_block_menu_name'];
+    $this->configuration['asu_brand_header_block_expand_on_hover'] =
+      $values['asu_brand_header_block_expand_on_hover'];
     $this->configuration['asu_brand_header_block_login_path'] =
       $values['asu_brand_header_block_login_path'];
     $this->configuration['asu_brand_header_block_logout_path'] =
