@@ -35,7 +35,12 @@ body.toolbar-vertical.toolbar-tray-open {
   /*padding-top:158px !important; /* less padding because toolbar transition occurs with breakpoint/mobile menu */
   padding-top: 199px !important;
 }
-
 #toolbar-administration .toolbar-tray-vertical nav.toolbar-lining {
   padding-top:158px;
+}
+
+/* Layout Builder dialogs for content editing UI need to be adjusted. */
+.ui-dialog.ui-widget.ui-widget-content.ui-dialog-position-side {
+  top: 197px !important;
+  padding-bottom: 158px; /* So we don't have dialog content clipped off */
 }

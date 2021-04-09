@@ -77,3 +77,18 @@ The ASU Brand header is designed to work with the Drupal core toolbar menu used
 to provide administrative system links. A popular Drupal module, the Admin
 Toolbar, which provides dropdown menus from the toolbar, is not currently
 supported.
+## Help! The header overlaps my content or UI!
+The ASU Brand header uses fixed positioning, and that can lead to issues with
+other fixed positioned elements in the UI. We've attempted to catch and supply
+CSS rules that make adjustments for those UI elements provided in Webspark. If
+you have customizations or added modules that are overlapped, you can use the
+following CSS to deliver UI adjustments:
+
+```
+body.asu-brand-header-present {
+  /* Your rules here. See css/asu_brand.header.css for examples from this
+     module. To see how the ASU Brand module uses Javascript to detect and
+     apply necessary changes related to the header, see
+     js/asu_brand.header.js */
+}
+```

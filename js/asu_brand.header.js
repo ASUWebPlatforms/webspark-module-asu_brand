@@ -8,6 +8,10 @@
         var headerElement = document.getElementById("headerContainer");
         if (headerElement) {
           headerElement.classList.add("asu-brand-toolbar-header-tray-open-compat");
+          // Provide means for other modules to deliver css rules based on when
+          // header is active. Not needed for our css because it's only loaded
+          // when the header is active.
+          document.body.classList.add("asu-brand-header-present");
         }
       }
       // For related functionality, see mutationObserver below.
