@@ -3,19 +3,21 @@
   Drupal.behaviors.AsuBrandHeaderBehavior = {
     attach: function (context, settings) {
 
-      // If toolbar detected, add compatibilty classes for spacing.
-      if (document.body.classList.contains('toolbar-fixed')) {
-        var headerElement = document.getElementById("headerContainer");
-        if (headerElement) {
+      // If the asu brand header is on the page...
+      var headerElement = document.getElementById("headerContainer");
+      if (headerElement) {
+
+        // If toolbar detected, add compatibilty classes for spacing.
+        if (document.body.classList.contains('toolbar-fixed')) {
           headerElement.classList.add("asu-brand-toolbar-header-tray-open-compat");
           // Provide means for other modules to deliver css rules based on when
           // header is active. Not needed for our css because it's only loaded
           // when the header is active.
           document.body.classList.add("asu-brand-header-present");
         }
-      }
-      // For related functionality, see mutationObserver below.
+        // For related functionality, see mutationObserver below.
 
+      }
     }
   };
 
@@ -47,6 +49,7 @@
       props.navTree[index]['selected'] = true;
     }
   }
+
 
   // Setup a mutation observer and watch body class attributes so we can base
   // header toolbar spacing compatibility classes on that.
@@ -100,11 +103,9 @@
   mutationObserver.observe( document.body, { attributes: true } );
 
 
-  // TODO If needed: update the CAS URL to append return path to sign in:
-  // '?destination=' + window.location.pathname
-
   // Initialize the asu_brand components-library header.
   componentsLibrary.initHeader(props);
+
 
   // Initialize the cookie-consent banner component.
   // window.addEventListener("DOMContentLoaded", event => {
@@ -113,6 +114,25 @@
   //   // Initialize cookie consent banner
   //   AsuCookieConsent.init(props);
   // })
+
+
+  // If we have a CAS login link in header, append return path.
+  // ?destination=/your/path is currently not supported.
+  // Use ?returnto=/your/path instead for now. May eventually be deprecated when
+  // destination is supported. See Drupal CAS docs notes on this:
+  // https://www.drupal.org/docs/contributed-modules/cas/introduction-setup#s-logging-in
+  // Must fire after header is initialized.
+  var headerElement = document.getElementById("headerContainer");
+  if (headerElement) {
+    // Get login anchor element.
+    var headerLoginElement = headerElement.querySelector(".login-status a");
+    // Regex match on /cas and /caslogin paths at end of domain, with or w/o
+    // trailing /
+    if (headerLoginElement && ( /\/cas[\/]?$/.test(headerLoginElement.href) || /\/caslogin[\/]?$/.test(headerLoginElement.href) )) {
+      // Append the returnto parameter.
+      headerLoginElement.href += "?returnto=" + window.location.pathname;
+    }
+  }
 
 // TODO Without jQuery, we get Uncaught ReferenceError: jQuery is not defined.
 // Is it required by Drupal or drupalSettings? Would like it working w/o jQuery.
