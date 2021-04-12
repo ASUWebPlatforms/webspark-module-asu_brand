@@ -107,13 +107,17 @@
   componentsLibrary.initHeader(props);
 
 
-  // Initialize the cookie-consent banner component.
-  // window.addEventListener("DOMContentLoaded", event => {
-  //   // Optional props to provide.
-  //   var props = { asuCookieDomain = "asu.edu" };
-  //   // Initialize cookie consent banner
-  //   AsuCookieConsent.init(props);
-  // })
+  // Initialize the cookie-consent banner component if we're configured for it.
+  var cookieConsentEnabled = drupalSettings.asu_brand.cookie_consent;
+  if (cookieConsentEnabled) {
+    window.addEventListener("DOMContentLoaded", event => {
+      // Optional props to provide.
+      //var props = { asuCookieDomain = "asu.edu" };
+      //AsuCookieConsent.init(props);
+      // Initialize cookie consent banner
+      AsuCookieConsent.init();
+    });
+  }
 
 
   // If we have a CAS login link in header, append return path.

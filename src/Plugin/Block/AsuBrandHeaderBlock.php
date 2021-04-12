@@ -97,10 +97,11 @@ class AsuBrandHeaderBlock extends BlockBase {
     );
     // Attach components and helper js registered in asu_brand.libraries.yml
     $block_output['#attached']['library'][] = 'asu_brand/components-library';
-    // TODO attach Cookie Consent
-    //$block_content['#attached']['library'][] = 'asu_brand/cookie-consent';
     // Pass block configs to javascript. Gets taken up in js/asu_brand.header.js
     $block_output['#attached']['drupalSettings']['asu_brand']['props'] = $props;
+    // Get and pass cookie consent status, too.
+    $global_config = \Drupal::config('asu_brand.settings');
+    $block_output['#attached']['drupalSettings']['asu_brand']['cookie_consent'] = $global_config->get('asu_brand.asu_brand_cookie_consent_enabled');
 
     return $block_output;
   }
