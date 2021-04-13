@@ -93,7 +93,7 @@ class AsuBrandHeaderBlock extends BlockBase {
         <!-- Cookie Consent component will be initialized in this container. -->
         <div id="cookieConsentContainer" class="cookieConsentContainer"></div>');
     $block_output['#cache'] = array(
-      'contexts' => array('user.roles'),
+      'contexts' => array('user'),
     );
     // Attach components and helper js registered in asu_brand.libraries.yml
     $block_output['#attached']['library'][] = 'asu_brand/components-library';
