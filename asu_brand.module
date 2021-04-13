@@ -71,14 +71,31 @@ function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
     $form['settings']['label_display']['#description'] = t("For the ASU header, you do not want to display the block admin title to visitors.");
   }
 
-  // Menu link edit forms for system and content links.
-  if (
-    $form_id === "menu_link_edit" ||
-    $form_id === "menu_link_content_menu_link_content_form"
-  ) {
+  // Menu link edit forms for content links.
+  if ($form_id === "menu_link_content_menu_link_content_form") {
 
-    //dpm($form);
+    // We can get the header component in an error state if a menu link item is
+    // configured as both a column button and a dropdown tray button. Prevent
+    // that using forms api states.
 
+    // Disable menu link type when dropdown tray button is enabled.
+    $form['menu_link_asu_brand_link_type']['#states'] = [
+      'disabled' => [
+        ':input[name="menu_link_asu_brand_link_is_button[value]"]' => ['checked' => TRUE],
+      ],
+    ];
+    // Enable tray button only if menu link type is not header or column button.
+    $form['menu_link_asu_brand_link_is_button']['#states'] = [
+      'enabled' => [
+        ':input[name="menu_link_asu_brand_link_type"]' => ['value' => '_none'],
+      ],
+    ];
+    // Enable tray button color only when is (tray) button checked.
+    $form['menu_link_asu_brand_link_button_color']['#states'] = [
+      'enabled' => [
+        ':input[name="menu_link_asu_brand_link_is_button[value]"]' => ['checked' => TRUE],
+      ],
+    ];
   }
 }
 
