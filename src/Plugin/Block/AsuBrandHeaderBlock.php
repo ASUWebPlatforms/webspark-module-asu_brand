@@ -5,6 +5,8 @@ namespace Drupal\asu_brand\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Menu;
 use Drupal\Component\Utility\Html;
 //use Drupal\Core\Menu\MenuLinkTree;
 //use Drupal\Component\Utility\UrlHelper;
@@ -92,9 +94,12 @@ class AsuBrandHeaderBlock extends BlockBase {
         <div id="headerContainer"></div>
         <!-- Cookie Consent component will be initialized in this container. -->
         <div id="cookieConsentContainer" class="cookieConsentContainer"></div>');
-    $block_output['#cache'] = array(
-      'contexts' => array('user.roles'),
-    );
+    $tag_menu = $config['asu_brand_header_block_menu_enabled'] ? $config['asu_brand_header_block_menu_name'] : 'main';
+    $block_output['#cache'] = [
+      'contexts' => $this->getCacheContexts(),
+      // Break cache when block or menus change.
+      'tags' => Cache::mergeTags($this->getCacheTags(), Cache::buildTags('config:system.menu', [$tag_menu], '.')),
+    ];
     // Attach components and helper js registered in asu_brand.libraries.yml
     $block_output['#attached']['library'][] = 'asu_brand/components-library';
     // Pass block configs to javascript. Gets taken up in js/asu_brand.header.js
@@ -104,6 +109,15 @@ class AsuBrandHeaderBlock extends BlockBase {
     $block_output['#attached']['drupalSettings']['asu_brand']['cookie_consent'] = $global_config->get('asu_brand.asu_brand_cookie_consent_enabled');
 
     return $block_output;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // TODO We should really only use the user context due to our current
+    // username fallback above, but that breaks the component for some reason.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['user.roles']);
   }
 
   /**
