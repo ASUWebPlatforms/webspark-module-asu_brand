@@ -7,8 +7,8 @@ components-library:
   js:
     node_modules/@asu-design-system/components-library/dist/vendor.js: {}
     node_modules/@asu-design-system/components-library/dist/components-library.js: {}
+    node_modules/@asu-design-system/cookie-consent/dist/cookie-consent.min.js: {}
     js/asu_brand.header.js: {}
-    js/cookie-consent/cookie-consent.min.js: {}
   css:
     component:
       css/asu_brand.header.css: {}

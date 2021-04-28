@@ -7,5 +7,7 @@ node_modules/*
 node_modules/@asu-design-system/*
 !node_modules/@asu-design-system/components-library/
 node_modules/@asu-design-system/components-library/.npm/_logs/
+!node_modules/@asu-design-system/cookie-consent/
+node_modules/@asu-design-system/cookie-consent/.npm/_logs/
 
 /vendor/
