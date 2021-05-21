@@ -6,7 +6,7 @@
 /* Default padding for header for anonymous users. Overridden by rules below
    for authenticated users. */
 body {
-  padding-top: 199px; /* 72px space below header */
+  padding-top: 105px; /* Adjust space below header */
 }
 
 /* If #toolbar_administration our js adds asu_brand-toolbar-*-compat classes */
@@ -17,10 +17,10 @@ body {
   top:39px;
 }
 body.toolbar-horizontal.toolbar-tray-open {
-  padding-top:274px !important; /* 72px space below header */
+  padding-top:180px !important; /* Adjust space below header */
 }
 body.toolbar-horizontal {
-  padding-top:233px !important; /* 72px space below header */
+  padding-top:139px !important; /* Adjust space below header */
 }
 /* vertical variations */
 #headerContainer.asu-brand-toolbar-header-tray-open-compat-vertical header,
@@ -37,9 +37,9 @@ body.toolbar-vertical.toolbar-tray-open {
     applies in both cases, we use the larger option which means there's a
     bit of extra padding-top on the body when the vertical toolbar is used on
     mobile. Not a public-user facing issue, so leaving for future
-    improvement. */
+    improvement. UPDATE: value is now obsolete and will need to be adjusted */
   /*padding-top:158px !important; /* less padding because toolbar transition occurs with breakpoint/mobile menu */
-  padding-top:233px !important;
+  padding-top:139px !important; /* Adjust space below header */
 }
 /* Adjust toolbar vertical spacing to be below header */
 #toolbar-administration .toolbar-tray-vertical nav.toolbar-lining {
@@ -50,4 +50,23 @@ body.toolbar-vertical.toolbar-tray-open {
 .ui-dialog.ui-widget.ui-widget-content.ui-dialog-position-side {
   top: 233px !important;
   padding-bottom: 158px; /* So we don't have dialog content clipped off */
+}
+
+/* Body adjustments for mobile 992px breakpoint */
+@media only screen and (max-width: 992px) {
+  /* Default padding for header for anonymous users. Overridden by rules below
+    for authenticated users. */
+  body {
+    padding-top: 73px; /* Adjust space below header */
+  }
+  body.toolbar-horizontal.toolbar-tray-open {
+    padding-top:148px !important; /* Adjust space below header */
+  }
+  body.toolbar-horizontal {
+    padding-top:107px !important; /* Adjust space below header */
+  }
+  body.toolbar-vertical,
+  body.toolbar-vertical.toolbar-tray-open {
+    padding-top:107px !important; /* Adjust space below header */
+  }
 }
