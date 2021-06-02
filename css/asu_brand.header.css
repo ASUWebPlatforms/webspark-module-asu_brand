@@ -17,10 +17,10 @@ body {
   top:39px;
 }
 body.toolbar-horizontal.toolbar-tray-open {
-  padding-top:180px !important; /* Adjust space below header */
+  padding-top:184px !important; /* Adjust space below header */
 }
 body.toolbar-horizontal {
-  padding-top:139px !important; /* Adjust space below header */
+  padding-top:144px !important; /* Adjust space below header */
 }
 /* vertical variations */
 #headerContainer.asu-brand-toolbar-header-tray-open-compat-vertical header,
@@ -39,7 +39,7 @@ body.toolbar-vertical.toolbar-tray-open {
     mobile. Not a public-user facing issue, so leaving for future
     improvement. UPDATE: value is now obsolete and will need to be adjusted */
   /*padding-top:158px !important; /* less padding because toolbar transition occurs with breakpoint/mobile menu */
-  padding-top:139px !important; /* Adjust space below header */
+  padding-top:144px !important; /* Adjust space below header */
 }
 /* Adjust toolbar vertical spacing to be below header */
 #toolbar-administration .toolbar-tray-vertical nav.toolbar-lining {
@@ -50,6 +50,18 @@ body.toolbar-vertical.toolbar-tray-open {
 .ui-dialog.ui-widget.ui-widget-content.ui-dialog-position-side {
   top: 233px !important;
   padding-bottom: 158px; /* So we don't have dialog content clipped off */
+}
+/* And adjust internal padding impacted by tweak above */
+.ui-dialog.ui-widget.ui-widget-content.ui-dialog-position-side 
+.ui-front.ui-dialog-content.ui-widget-content {
+  padding-top: 4px !important;
+}
+
+/* Media modal uses code that adapts where it is within the page based on 
+  viewport size and it can end up under the header. Solve it simply using 
+  z-index. */
+body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
+  z-index: 1500 !important;
 }
 
 /* Body adjustments for mobile 992px breakpoint */
@@ -63,10 +75,10 @@ body.toolbar-vertical.toolbar-tray-open {
     padding-top:148px !important; /* Adjust space below header */
   }
   body.toolbar-horizontal {
-    padding-top:107px !important; /* Adjust space below header */
+    padding-top:112px !important; /* Adjust space below header */
   }
   body.toolbar-vertical,
   body.toolbar-vertical.toolbar-tray-open {
-    padding-top:107px !important; /* Adjust space below header */
+    padding-top:112px !important; /* Adjust space below header */
   }
 }
