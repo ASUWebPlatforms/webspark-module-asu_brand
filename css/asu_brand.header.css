@@ -26,6 +26,7 @@ body.toolbar-horizontal {
 #headerContainer.asu-brand-toolbar-header-tray-open-compat-vertical header,
 #headerContainer.asu-brand-toolbar-header-tray-closed-compat-vertical header {
   top:39px;
+  z-index: 1200 !important;
 }
 body.toolbar-vertical,
 body.toolbar-vertical.toolbar-tray-open {
