@@ -2,6 +2,8 @@
 
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
+
 
 /**
  * @file
@@ -97,6 +99,35 @@ function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
       ],
     ];
   }
+}
+
+/**
+ * @param array $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function asu_brand_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+
+  $form['help'] = [
+    '#type' => 'item',
+    '#title' => t('Header menu item controls'),
+    '#markup' => t('<p>The menu item settings below are only used in menus
+      configured as ASU Brand Header menus. Some guidelines to asisst in
+      building your Header menu:</p>
+      <ul>
+        <li>The first menu item in an ASU Brand menu will automatically be turned
+        into the Home icon.</li>
+        <li>If you place a menu item at or below the third level in a menu, it
+        will not render. Only first and second level items are supported.</li>
+        <li>When you configure a second level menu item as a button within a
+        column, please ensure it is the last item in a column, otherwise it may
+        render incorrectly in the mobile menu.</li>
+        <li>Menu dropdowns are limited to 500px height. Please ensure
+        all your menu items are visible.</li>
+      </ul>
+      '),
+    '#weight' => 49,
+  ];
 }
 
 /**
