@@ -3,6 +3,8 @@
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 
 /**
@@ -108,6 +110,9 @@ function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
  */
 function asu_brand_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 
+  $module_handler = \Drupal::service('module_handler');
+  $readme_path = '/' . $module_handler->getModule('asu_brand')->getPath() . '/README.md';
+
   $form['help'] = [
     '#type' => 'item',
     '#title' => t('Header menu item controls'),
@@ -124,8 +129,10 @@ function asu_brand_form_menu_link_content_form_alter(array &$form, FormStateInte
         render incorrectly in the mobile menu.</li>
         <li>Web Standards requires menu dropdowns to be limited to 500px height
         for desktop. Please check your dropdowns to ensure they comply.</li>
+        <li>For more on configuring your header, see the
+        <a href=":readme">README</a>.</li>
       </ul>
-      '),
+      ', [":readme" => $readme_path]),
     '#weight' => 49,
   ];
 }
