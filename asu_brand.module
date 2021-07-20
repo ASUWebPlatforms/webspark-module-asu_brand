@@ -122,8 +122,8 @@ function asu_brand_form_menu_link_content_form_alter(array &$form, FormStateInte
         <li>When you configure a second level menu item as a button within a
         column, please ensure it is the last item in a column, otherwise it may
         render incorrectly in the mobile menu.</li>
-        <li>Menu dropdowns are limited to 500px height. Please ensure
-        all your menu items are visible.</li>
+        <li>Web Standards requires menu dropdowns to be limited to 500px height
+        for desktop. Please check your dropdowns to ensure they comply.</li>
       </ul>
       '),
     '#weight' => 49,
