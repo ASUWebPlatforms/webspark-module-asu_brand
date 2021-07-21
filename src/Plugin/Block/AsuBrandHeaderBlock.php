@@ -427,8 +427,8 @@ class AsuBrandHeaderBlock extends BlockBase {
     $tripwire = false;
     $childItemCols = [];
     foreach ($childItems as $k => $v) {
-      // Break out into columns if we have headings.
-      if ($tripwire && $v['type'] === "heading") {
+      // Break out into columns if we have headings or column breaks.
+      if ($tripwire && ($v['type'] === "heading" || $v['type'] === "column break")) {
         $col++;
       }
       $childItemCols[$col][] = $v;
