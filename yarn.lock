@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@asu-design-system/components-library@2.1.10":
-  version "2.1.10"
-  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponents-library/-/components-library-2.1.10.tgz#c66f0ba821185038b86d5dcdbf1014137cd01ee8"
-  integrity sha512-jCZlY0QWEEF0wT+9Fv+7v+8NvJpPPC7zcabvfuK+MpRp6qcnqCPHNU3rZDAu8mrEI5izkW5kktIZM6BhyvXSaQ==
+"@asu-design-system/components-library@2.1.11":
+  version "2.1.11"
+  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponents-library/-/components-library-2.1.11.tgz#18026695c6623fded54daabbd4109d6de2ce1e69"
+  integrity sha512-fNqvoBLis/nDG3JgsxGbbpi+LtPzAk8bFHRDttcy/QK7kPqgD+zyVcqAVAeOe6rOnngUqA6IEfbRePOuLu3zzQ==
   dependencies:
     "@asu-design-system/design-tokens" "^1.1.0"
     "@emotion/css" "^11.0.0"
