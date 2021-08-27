@@ -66,13 +66,14 @@ class AsuBrandHeaderBlock extends BlockBase {
     // rely on Drupal instead, via passing in props.
     if ($config['asu_brand_header_block_sync_session']) {
       $current_uid = \Drupal::currentUser()->id();
-      $current_user = \Drupal\user\Entity\User::load($current_uid);
       if ($current_uid > 0) {
         $props['loggedIn'] = TRUE;
         // If we have the SSONAME cookie, use that name. Fallback to
-        // ASURITE/username. See also JS solve we have as a backup for
+        // "You are logged in" since using the username results in cache issues
+        // given the per-role cache. Caching per user causes the header to
+        // break for some reason. See also JS solve we have as a backup for
         // when Pantheon strips cookies, in asu_brand.header.js.
-        $props['userName'] = isset($_COOKIE['SSONAME']) ? Html::escape($_COOKIE['SSONAME']) : $current_user->get('name')->value;
+        $props['userName'] = isset($_COOKIE['SSONAME']) ? Html::escape($_COOKIE['SSONAME']) : t('You are logged in');
       } else { // Force header to match Drupal login state even if there's a SSO session.
         $props['loggedIn'] = FALSE;
         $props['userName'] = '';
