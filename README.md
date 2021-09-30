@@ -92,3 +92,20 @@ body.asu-brand-header-present {
      js/asu_brand.header.js */
 }
 ```
+## Extending the Google Analytics dataLayer
+The ASU Brand module initializes a Google Analytics dataLayer for use by
+frontend Unity components. The dataLayer has been implmented so that
+modules may take advantage of it as well using the
+hook_asu_brand_gtm_datalayer_alter() hook. Please note, use of this hook to
+add page-based dataLayer pushes has not been tested, so it is encumbent on
+the developer implementing to ensure it behaves as desired and doesn't
+interfere with other dataLayer usage on existing pages. If you test this,
+we would appreciate hearing about your experience.
+
+```
+function hook_asu_brand_gtm_datalayer_alter(array &$datalayer) {
+  // Set a "site" variable return.
+  $datalayer['site'] = 'My Site';
+}
+*/
+```
