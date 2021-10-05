@@ -41,16 +41,39 @@
     }
   }
 
-  // If we find the current path in top level items, set selected prop, aka
-  // active. We do this client side to avoid needing to break the block cache.
+  // If we find the current path in top level items or in the children, set 
+  // selected prop, aka active. We do this client side to avoid needing to break 
+  // the block cache.
   var currentPath = window.location.pathname+window.location.search;
   for (var index = 0; index < props.navTree.length; index++) {
-    if (props.navTree[index]['href'] === currentPath) {
+    if (inActiveTrail(props.navTree[index], currentPath)) {
       props.navTree[index]['selected'] = true;
     }
   }
 
-
+  function inActiveTrail(item, path) {
+    // Check if the item path is a match.
+    if (item['href'] === path) {
+      return true;
+    }
+    // If the item path is no match and has no sub-items return false.
+    if (!item.hasOwnProperty('items') || !item.items.length) {
+      return false;
+    }
+    // If it has children, search the children
+    for (var index = 0; index < item.items[0].length; index++) {
+      // If the child matches the path return true.
+      if (item.items[0][index]['href'] === path) {
+        return true;
+      }
+      // Go down the tree.
+      if (inActiveTrail(item.items[0][index], path)) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
   // Setup a mutation observer and watch body class attributes so we can base
   // header toolbar spacing compatibility classes on that.
   // Ref: https://www.seanmcp.com/articles/event-listener-for-class-change/
