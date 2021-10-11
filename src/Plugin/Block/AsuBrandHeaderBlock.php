@@ -50,7 +50,7 @@ class AsuBrandHeaderBlock extends BlockBase {
         "href" => $config['asu_brand_header_block_cta1_url'],
         "text" => $config['asu_brand_header_block_cta1_label'],
         //"size" => "medium",
-        "color" => "gold"
+        "color" => $config['asu_brand_header_block_cta1_style']
       ];
     }
     if ($config['asu_brand_header_block_cta2_url']) {
@@ -58,7 +58,7 @@ class AsuBrandHeaderBlock extends BlockBase {
         "href" => $config['asu_brand_header_block_cta2_url'],
         "text" => $config['asu_brand_header_block_cta2_label'],
         //"size" => "medium",
-        "color" => "light"
+        "color" => $config['asu_brand_header_block_cta2_style']
       ];
     }
 
@@ -250,6 +250,20 @@ class AsuBrandHeaderBlock extends BlockBase {
         ),
       ),
     ];
+
+    $style_options = [
+        'gold' => 'Gold',
+        'maroon' => 'Maroon',
+        'light' => 'Light gray',
+        'dark' => 'Dark gray',
+      ];
+    $form['asu_brand_header_block_cta1_style'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Call to action button 1 style'),
+      '#default_value' => isset($config['asu_brand_header_block_cta1_style']) ?
+        $config['asu_brand_header_block_cta1_style'] : '',
+      '#options' => $style_options,
+    ];
     $form['asu_brand_header_block_cta2_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Call to action button 2 label'),
@@ -269,6 +283,14 @@ class AsuBrandHeaderBlock extends BlockBase {
           ),
         ),
       ),
+    ];
+
+    $form['asu_brand_header_block_cta2_style'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Call to action button 2 style'),
+      '#default_value' => isset($config['asu_brand_header_block_cta2_style']) ?
+        $config['asu_brand_header_block_cta2_style'] : '',
+      '#options' => $style_options,
     ];
 
     return $form;
@@ -304,10 +326,14 @@ class AsuBrandHeaderBlock extends BlockBase {
       $values['asu_brand_header_block_cta1_label'];
     $this->configuration['asu_brand_header_block_cta1_url'] =
       $values['asu_brand_header_block_cta1_url'];
+    $this->configuration['asu_brand_header_block_cta1_style'] =
+      $values['asu_brand_header_block_cta1_style'];
     $this->configuration['asu_brand_header_block_cta2_label'] =
       $values['asu_brand_header_block_cta2_label'];
     $this->configuration['asu_brand_header_block_cta2_url'] =
       $values['asu_brand_header_block_cta2_url'];
+    $this->configuration['asu_brand_header_block_cta2_style'] =
+      $values['asu_brand_header_block_cta2_style'];
   }
 
   /**
