@@ -254,8 +254,8 @@ class AsuBrandHeaderBlock extends BlockBase {
     $style_options = [
         'gold' => 'Gold',
         'maroon' => 'Maroon',
-        'light' => 'Light gray',
-        'dark' => 'Dark gray',
+        'light' => 'Gray 2',
+        'dark' => 'Gray 7',
       ];
     $form['asu_brand_header_block_cta1_style'] = [
       '#type' => 'select',
