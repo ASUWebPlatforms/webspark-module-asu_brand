@@ -41,8 +41,8 @@
     }
   }
 
-  // If we find the current path in top level items or in the children, set 
-  // selected prop, aka active. We do this client side to avoid needing to break 
+  // If we find the current path in top level items or in the children, set
+  // selected prop, aka active. We do this client side to avoid needing to break
   // the block cache.
   var currentPath = window.location.pathname+window.location.search;
   for (var index = 0; index < props.navTree.length; index++) {
@@ -71,7 +71,7 @@
         return true;
       }
     }
-    
+
     return false;
   }
   // Setup a mutation observer and watch body class attributes so we can base
@@ -125,10 +125,11 @@
   var mutationObserver = new MutationObserver(mutationCallback);
   mutationObserver.observe( document.body, { attributes: true } );
 
-
-  // Initialize the asu_brand components-library header.
-  componentsLibrary.initHeader(props);
-
+  // Initialize the asu_brand component-header header.
+  AsuHeader.initGlobalHeader({
+    targetSelector: '#headerContainer',
+    props: props
+  });
 
   // Initialize the cookie-consent banner component if we're configured for it.
   var cookieConsentEnabled = drupalSettings.asu_brand.cookie_consent;

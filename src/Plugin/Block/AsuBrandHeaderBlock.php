@@ -102,6 +102,7 @@ class AsuBrandHeaderBlock extends BlockBase {
       'tags' => Cache::mergeTags($this->getCacheTags(), Cache::buildTags('config:system.menu', [$tag_menu], '.')),
     ];
     // Attach components and helper js registered in asu_brand.libraries.yml
+    $block_output['#attached']['library'][] = 'asu_react_core/react-core';
     $block_output['#attached']['library'][] = 'asu_brand/components-library';
     // Pass block configs to javascript. Gets taken up in js/asu_brand.header.js
     $block_output['#attached']['drupalSettings']['asu_brand']['props'] = $props;
