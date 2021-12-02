@@ -6,11 +6,8 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Menu;
 use Drupal\Component\Utility\Html;
-//use Drupal\Core\Menu\MenuLinkTree;
-//use Drupal\Component\Utility\UrlHelper;
-//use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Url;
 
 /**
  * Provides the ASU brand header block which deploys the component header.
@@ -36,7 +33,7 @@ class AsuBrandHeaderBlock extends BlockBase {
 
     // Rally props to pass to JS as drupalSettings.
     $props = [];
-    $props['baseUrl'] = base_path();
+    $props['baseUrl'] = $this->getBaseUrl();
     $props['title'] = $config['asu_brand_header_block_title'];
     $props['parentOrg'] = $config['asu_brand_header_block_parent_org'];
     $props['parentOrgUrl'] = $config['asu_brand_header_block_parent_org_url'];
@@ -135,6 +132,7 @@ class AsuBrandHeaderBlock extends BlockBase {
     // expandOnHover TODO for future dev
     // mobileNavTree TODO for future dev
     // breakpoint TODO for future dev
+    // animateTitle TODO for future dev
 
     // We localize most header settings to the block form to better support
     // microsites and subsites.
@@ -148,6 +146,13 @@ class AsuBrandHeaderBlock extends BlockBase {
       '#description' => $this->t('Site title to appear in the header.'),
       '#default_value' => isset($config['asu_brand_header_block_title']) ?
         $config['asu_brand_header_block_title'] : \Drupal::config('system.site')->get('name'),
+      '#required' => TRUE
+    ];
+    $form['asu_brand_header_block_base_url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Site URL'),
+      '#description' => $this->t('URL of the site.'),
+      '#default_value' => $this->getBaseUrl(),
       '#required' => TRUE
     ];
     $form['asu_brand_header_block_parent_org'] = [
@@ -306,6 +311,8 @@ class AsuBrandHeaderBlock extends BlockBase {
 
     $this->configuration['asu_brand_header_block_title'] =
       $values['asu_brand_header_block_title'];
+    $this->configuration['asu_brand_header_block_base_url'] =
+      $values['asu_brand_header_block_base_url'];
     $this->configuration['asu_brand_header_block_parent_org'] =
       $values['asu_brand_header_block_parent_org'];
     $this->configuration['asu_brand_header_block_parent_org_url'] =
@@ -464,6 +471,25 @@ class AsuBrandHeaderBlock extends BlockBase {
       $tripwire = true;
     }
     return $childItemCols;
+  }
+
+  /**
+   * Returns the base URL string.
+   *
+   * @return string
+   *  The base URL.
+   */
+  protected function getBaseUrl(): string {
+    $config = $this->getConfiguration();
+
+    if (!empty($config['asu_brand_header_block_base_url'])) {
+      $out = $config['asu_brand_header_block_base_url'];
+    }
+    else {
+      $out = Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString();
+    }
+
+    return $out;
   }
 }
 
