@@ -135,11 +135,14 @@
   var cookieConsentEnabled = drupalSettings.asu_brand.cookie_consent;
   if (cookieConsentEnabled) {
     window.addEventListener("DOMContentLoaded", event => {
-      // Optional props to provide.
-      //var props = { asuCookieDomain = "asu.edu" };
-      //AsuCookieConsent.init(props);
       // Initialize cookie consent banner
-      AsuCookieConsent.init();
+      AsuCookieConsent.initCookieConsent({
+        targetSelector: "#cookieConsentContainer",
+        props: {
+          enableCookieConsent: true,
+          expirationTime: 90, // Number of days to expire the consent
+        },
+      });
     });
   }
 
