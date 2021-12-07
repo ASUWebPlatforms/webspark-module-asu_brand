@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@asu-design-system/component-header@^1.3.9":
-  version "1.3.9"
-  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-header/-/component-header-1.3.9.tgz#56ae046d0bd63052e0f1140dc39555f45daf0cb0"
-  integrity sha512-K0dZx65v0kc5SdufWfEi74LWauPIFJzmTu6UcHLfCC2kmfMMveRL1cOgRZefh/SmwNkRoBA99G8f02nsW/Q/EQ==
+"@asu-design-system/component-header@1.3.12":
+  version "1.3.12"
+  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-header/-/component-header-1.3.12.tgz#678711700222802aeeace5d58f0d5fef3d079cfe"
+  integrity sha512-zonvWcrmDwvoBWTff0Mn0hjPhYrT4IYttSuti9S9F45/R+4BI+UkSMWLz+R+JmdzDMG7N01DjRaLmw38fEQ/Cg==
 
 "@asu-design-system/components-library@2.2.6":
   version "2.2.6"
