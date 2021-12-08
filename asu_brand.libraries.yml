@@ -5,9 +5,10 @@ components-library:
     - core/drupal
     - core/drupalSettings
   js:
-    node_modules/@asu-design-system/components-library/dist/vendor.js: {}
-    node_modules/@asu-design-system/components-library/dist/components-library.js: {}
-    node_modules/@asu-design-system/cookie-consent/dist/cookie-consent.min.js: {}
+    node_modules/@asu-design-system/component-header/dist/vendor.production.js: {}
+    node_modules/@asu-design-system/component-header/dist/Header.production.js: {}
+    node_modules/@asu-design-system/component-cookie-consent/dist/vendor.production.js: {}
+    node_modules/@asu-design-system/component-cookie-consent/dist/cookieConsent.production.js: {}
     js/asu_brand.header.js: {}
   css:
     component:
