@@ -165,3 +165,41 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
   }
 
 }
+
+#headerContainer .content-container {
+  border: none;
+  height: auto;
+  margin: inherit;
+  font-size: inherit;
+}
+@media screen and (min-width: 1260px) {
+  #headerContainer .content-container {
+    flex-direction: inherit;
+  }
+}
+#headerContainer .content-container .nav-link {
+  padding: 0;
+}
+#headerContainer .content-container .ul-heading {
+  color: black;
+}
+#headerContainer a.navbar-brand {
+  padding: 0;
+}
+@media screen and (max-width: 992px) {
+  #headerContainer .container-xl {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  #headerContainer .container-xl .navbar-toggler {
+    padding: 0.25rem 0.5rem;
+  }
+  #headerContainer .container-xl .header-top form label {
+    width: 100%;
+    margin-bottom: 0;
+    font-size: initial;
+  }
+  #headerContainer .container-xl .header-top form label svg {
+    top: 10px;
+  }
+}
