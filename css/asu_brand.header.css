@@ -186,7 +186,7 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
 #headerContainer a.navbar-brand {
   padding: 0;
 }
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 1260px) {
   #headerContainer .container-xl {
     padding-left: 0;
     padding-right: 0;
@@ -202,4 +202,25 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
   #headerContainer .container-xl .header-top form label svg {
     top: 10px;
   }
+
+  #headerContainer .content-container {
+    min-height: calc(100vh - 277px);
+    max-height: calc(100vh - 277px);
+  }
+
+  body.toolbar-horizontal #headerContainer .content-container {
+    min-height: calc(100vh - 330px);
+    max-height: calc(100vh - 330px);
+  }
+
+  body.toolbar-horizontal.toolbar-tray-open #headerContainer .content-container {
+    min-height: calc(100vh - 370px);
+    max-height: calc(100vh - 370px);
+  }
+
+  body.toolbar-vertical #headerContainer .content-container {
+    min-height: calc(100vh - 330px);
+    max-height: calc(100vh - 330px);
+  }
+
 }
