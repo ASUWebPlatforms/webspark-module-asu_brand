@@ -101,6 +101,14 @@ class AsuBrandHeaderBlock extends BlockBase {
         $props['partnerLogo']['alt'] = $config['asu_brand_header_block_partner_logo_alt'];
       }
     }
+    //Logo images.
+    $app_path_folder = $this->getPathImgFolder();
+    $props['logo'] = [
+      'alt' => 'Arizona State University',
+      'src' => $app_path_folder . '/arizona-state-university-logo-vertical.png',
+      'mobileSrc' => $app_path_folder . '/arizona-state-university-logo.png',
+      'brandLink' => 'https://www.asu.edu',
+    ];
 
     $block_output = [];
     // Markup containers where components will initialize.
@@ -557,6 +565,13 @@ class AsuBrandHeaderBlock extends BlockBase {
     }
 
     return $out;
+  }
+
+  protected function getPathImgFolder() {
+    $module_handler = \Drupal::service('module_handler');
+    $path_module = $module_handler->getModule('asu_brand')->getPath();
+    $appPathFolder = base_path() . $path_module . '/node_modules/@asu-design-system/component-header/dist/assets/img';
+    return $appPathFolder;
   }
 }
 
