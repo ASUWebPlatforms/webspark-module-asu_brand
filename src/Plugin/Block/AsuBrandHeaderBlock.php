@@ -84,6 +84,24 @@ class AsuBrandHeaderBlock extends BlockBase {
     }
     $props['navTree'] = $navTree;
 
+    if (!empty($config['asu_brand_header_block_partner_enabled'])) {
+      $props['isPartner'] = TRUE;
+
+      $props['partnerLogo'] = [];
+
+      if (!empty($config['asu_brand_header_block_partner_url'])) {
+        $props['partnerLogo']['brandLink'] = $config['asu_brand_header_block_partner_url'];
+      }
+
+      if (!empty($config['asu_brand_header_block_partner_logo_url'])) {
+        $props['partnerLogo']['src'] = $config['asu_brand_header_block_partner_logo_url'];
+      }
+
+      if (!empty($config['asu_brand_header_block_partner_logo_alt'])) {
+        $props['partnerLogo']['alt'] = $config['asu_brand_header_block_partner_logo_alt'];
+      }
+    }
+
     $block_output = [];
     // Markup containers where components will initialize.
     $block_output['#markup'] =
@@ -155,6 +173,46 @@ class AsuBrandHeaderBlock extends BlockBase {
       '#description' => $this->t('URL of the site.'),
       '#default_value' => $this->getBaseUrl(),
       '#required' => TRUE
+    ];
+
+    $form['partner'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Partner'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#description' => $this->t('Important: Use of the Partner Header must first be approved by the ASU Marketing Hub. Do not enable if you have not first received approval.'),
+    ];
+
+    $form['partner']['asu_brand_header_block_partner_enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Is Partner?'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_enabled']) ?
+        $config['asu_brand_header_block_partner_enabled'] : 0,
+    ];
+
+    $form['partner']['asu_brand_header_block_partner_url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Partner URL'),
+      '#description' => $this->t('URL of the partner unit.'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_url']) ?
+        $config['asu_brand_header_block_partner_url'] : '',
+      '#required' => FALSE
+    ];
+    $form['partner']['asu_brand_header_block_partner_logo_url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Partner Logo URL'),
+      '#description' => $this->t('URL of the partner logo image.'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_logo_url']) ?
+        $config['asu_brand_header_block_partner_logo_url'] : '',
+      '#required' => FALSE
+    ];
+    $form['partner']['asu_brand_header_block_partner_logo_alt'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Partner Logo Alt'),
+      '#description' => $this->t('The ALT attribute of the partner logo image.'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_logo_alt']) ?
+        $config['asu_brand_header_block_partner_logo_alt'] : '',
+      '#required' => FALSE
     ];
     $form['asu_brand_header_block_parent_org'] = [
       '#type' => 'textfield',
@@ -314,6 +372,14 @@ class AsuBrandHeaderBlock extends BlockBase {
       $values['asu_brand_header_block_title'];
     $this->configuration['asu_brand_header_block_base_url'] =
       $values['asu_brand_header_block_base_url'];
+    $this->configuration['asu_brand_header_block_partner_enabled'] =
+      $values['partner']['asu_brand_header_block_partner_enabled'];
+    $this->configuration['asu_brand_header_block_partner_url'] =
+      $values['partner']['asu_brand_header_block_partner_url'];
+    $this->configuration['asu_brand_header_block_partner_logo_url'] =
+      $values['partner']['asu_brand_header_block_partner_logo_url'];
+    $this->configuration['asu_brand_header_block_partner_logo_alt'] =
+      $values['partner']['asu_brand_header_block_partner_logo_alt'];
     $this->configuration['asu_brand_header_block_parent_org'] =
       $values['asu_brand_header_block_parent_org'];
     $this->configuration['asu_brand_header_block_parent_org_url'] =
