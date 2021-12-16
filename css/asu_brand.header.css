@@ -183,3 +183,9 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
   }
 
 }
+
+@media screen and (min-width: 1261px) {
+  #headerContainer a.home::after {
+    top: 0.55rem
+  }
+}
