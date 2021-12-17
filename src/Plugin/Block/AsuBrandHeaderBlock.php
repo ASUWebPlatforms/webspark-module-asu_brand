@@ -486,7 +486,7 @@ class AsuBrandHeaderBlock extends BlockBase {
       }
 
       // Get values from menu link custom fields we have added.
-      $item_link_custom_values = $this->getMenuLinkCustomValues($item['original_link']);
+      // $item_link_custom_values = $this->getMenuLinkCustomValues($item['original_link']);
 
       // BUILD LEVEL 1
       $navTree[] = [
@@ -497,10 +497,9 @@ class AsuBrandHeaderBlock extends BlockBase {
       ];
     }
     // First item always becomes Home icon.
-    //$navTree[0]['href'] = base_path();
-    //$navTree[0]['text'] = t('Home');
-    $navTree[0]['type'] = 'icon';
+    $navTree[0]['type'] = 'icon-home';
     $navTree[0]['class'] = 'home';
+
     return $navTree;
   }
 
