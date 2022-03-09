@@ -100,11 +100,15 @@ class AsuBrandSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Search URL'),
       '#default_value' => $config->get('asu_brand.asu_brand_search_url'),
+      '#description' => $this->t('URL to use for search in the header. Please don\'t update unless instructed. 
+        Format should match: https://search.asu.edu/search.'),
     ];
     $form['asu_brand']['search_config']['asu_brand_local_search_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Local Search URL'),
       '#default_value' => $config->get('asu_brand.asu_brand_local_search_url'),
+      '#description' => $this->t('If empty, your current site\'s base URL will be used. Optionally, you can override
+         with the URL of your choice to be used for scoping local search. Use the format: https://yourdomain.asu.edu.'),
     ];
 
     return parent::buildForm($form, $form_state);
