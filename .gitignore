@@ -13,3 +13,5 @@ node_modules/@asu-design-system/component-header/*
 !node_modules/@asu-design-system/component-header/dist
 
 /vendor/
+
+.idea/
