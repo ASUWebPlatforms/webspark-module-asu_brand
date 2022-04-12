@@ -15,10 +15,10 @@
     react-dom "^16.14.0"
     styled-components "^5.3.0"
 
-"@asu-design-system/component-header@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-header/-/component-header-1.6.0.tgz#f5bc295fbbc306af5f334476ced3e449f9e25b0a"
-  integrity sha512-UDO9/q4noiBr2tNWZH+qYtnJlyDhpS7AI/xFhgGu4cTV3rkvMzqQxJYe82VPzw56h/goy5svmY4IhsQMgDLXsw==
+"@asu-design-system/component-header@1.6.2":
+  version "1.6.2"
+  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-header/-/component-header-1.6.2.tgz#177e887e00320d3d11c835c16f7131b5c07d789f"
+  integrity sha512-/+GYLxcW2lRSnee64AMEt6IV90cON2qMaPvZtfQRC2F0zBL0JEBRoX57jWeVSSRzOJrrFLxiWZbBmJZiJq7Cew==
 
 "@babel/code-frame@^7.16.0":
   version "7.16.0"
