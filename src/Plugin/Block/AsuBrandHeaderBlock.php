@@ -112,7 +112,8 @@ class AsuBrandHeaderBlock extends BlockBase {
     // Search settings.
     $search_config = \Drupal::config('asu_brand.settings');
     $props['searchUrl'] = $search_config->get('asu_brand.asu_brand_search_url');
-    $props['site'] = $search_config->get('asu_brand.asu_brand_local_search_url');
+    $local_search_url = $search_config->get('asu_brand.asu_brand_local_search_url');
+    $props['site'] = strlen($local_search_url) ? $local_search_url : \Drupal::request()->getHost();
 
     $block_output = [];
     // Markup containers where components will initialize.
