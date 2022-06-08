@@ -157,7 +157,8 @@ class AsuBrandHeaderBlock extends BlockBase {
     $form = parent::blockForm($form, $form_state);
 
     // Get system menu options.
-    $menu_options = menu_ui_get_menus();
+    $menu_options = array_map(function ($menu) { return $menu->label(); }, \Drupal\system\Entity\Menu::loadMultiple());
+    asort($menu_options);
 
     // Currently unimplemented config items for props:
     // logo TODO for future dev
@@ -458,6 +459,7 @@ class AsuBrandHeaderBlock extends BlockBase {
       // BUILD LEVEL 2 first, if extant, to put under parent.
       $childItems = [];
       $childTrayButtons = [];
+      $childItemCols = [];
       if (!empty($item['below'])) {
         foreach ($item['below'] as $child) {
 
