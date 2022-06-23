@@ -119,10 +119,10 @@ class AsuBrandHeaderBlock extends BlockBase {
     // Markup containers where components will initialize.
     $block_output['#markup'] =
       $this->t('
-        <!-- Header component will be initialized in this container. -->
-        <div id="headerContainer"></div>
         <!-- Cookie Consent component will be initialized in this container. -->
-        <div id="cookieConsentContainer" class="cookieConsentContainer"></div>');
+        <div id="cookieConsentContainer" class="cookieConsentContainer"></div>
+        <!-- Header component will be initialized in this container. -->
+        <div id="headerContainer"></div>');
     $tag_menu = $config['asu_brand_header_block_menu_enabled'] ? $config['asu_brand_header_block_menu_name'] : 'main';
     $block_output['#cache'] = [
       'contexts' => $this->getCacheContexts(),
