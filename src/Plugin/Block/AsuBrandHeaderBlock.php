@@ -114,6 +114,11 @@ class AsuBrandHeaderBlock extends BlockBase {
     $props['searchUrl'] = $search_config->get('asu_brand.asu_brand_search_url');
     $local_search_url = $search_config->get('asu_brand.asu_brand_local_search_url');
     $props['site'] = strlen($local_search_url) ? $local_search_url : \Drupal::request()->getHost();
+    // "opt-out" for use by ASU CMS, Integrated Search or with special
+    // dispensation.
+    if ($props['site'] == "opt-out") {
+      unset($props['site']);
+    }
 
     $block_output = [];
     // Markup containers where components will initialize.
@@ -580,40 +585,3 @@ class AsuBrandHeaderBlock extends BlockBase {
     return $appPathFolder;
   }
 }
-
-/* DEV NOTES
-
-TODO Add Cookie Consent
-TODO Create improvement ticket for admin UI: Capture ideas
-  - menu handling limits depth to 2 for us. Matches standard. Document in UI.
-  - add menu configs column to menu list adming table showing link item settings
-  - js not working without including jQuery, which is unused... drupalSettings or Drupal js libs' dependency maybe?
-
-TODO add a test (see other asu_brand for example) - confirm:
-  - enabled menu items show
-  - disabled menu items don't show
-  - menu items at lower levels don't show
-  - menu features display
-  - login link matches login status
-
-Sample Props and navTree structures
-See Storybook Knobs:
-https://unity.web.asu.edu/@asu-design-system/components-library/index.html?path=/story/header--base
-
-navTree array structure, rough reference
-  href
-  text
-  type : one of icon (home)
-  class TODO not implemented. Needed?
-  selected
-  buttons
-    text
-    href
-    color
-  items: (each array under is a column)
-    href
-    text
-    type : one of heading, button
-    classes TODO not implmented. Needed?
-
-*/
