@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@asu-design-system/component-cookie-consent@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-cookie-consent/-/component-cookie-consent-1.0.1.tgz#eb038f3b28ee48acb6c5c16968b78b755444931f"
-  integrity sha512-5In1MHO6NKdQJUOqmjA5mWeKvYWCMoRAZ5lDldLyNABMB420Fk1GiP3qte2cOg+TwWrWsRPtPMY6QvV14D3gEw==
+"@asu-design-system/component-cookie-consent@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-cookie-consent/-/component-cookie-consent-1.2.1.tgz#789981d8a0b8e61787f2ac67fb464b2a962262f5"
+  integrity sha512-sAsZb2ltsyGPzh8r9NwjyU19lP41VdZJkYpi2NEreLLWYPrQNY6KWrF/QqyjnIJDEnwX5kCiN2KiQvp9HF7zvQ==
   dependencies:
     "@babel/plugin-transform-react-jsx" "^7.13.12"
     "@fortawesome/free-solid-svg-icons" "^5.15.3"
@@ -15,10 +15,10 @@
     react-dom "^16.14.0"
     styled-components "^5.3.0"
 
-"@asu-design-system/component-header@1.6.3":
-  version "1.6.3"
-  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-header/-/component-header-1.6.3.tgz#dc05f5117a299edd3c4baeac2886a7dab5ab2ef4"
-  integrity sha512-B+5GqGmoQc7/aYa4ZfC2WrlwM/xfm2jveqgVmpD4P9lb7DJOf6pxBeKI1YUQoNDdHtW+GjU67bb7lnUnjlfVNw==
+"@asu-design-system/component-header@1.6.5":
+  version "1.6.5"
+  resolved "https://registry.web.asu.edu/@asu-design-system%2fcomponent-header/-/component-header-1.6.5.tgz#f1de2ebbdf6fef89d387c1a6870ff35a625da46e"
+  integrity sha512-yLujQP9YFPHHOmmlys7fQP0WaR7OhsObw7bDwLkMiNsL7amgV7WrXfnIDGs07sRzxElYeYemrjhA9+NFfEW45g==
 
 "@babel/code-frame@^7.16.0":
   version "7.16.0"
