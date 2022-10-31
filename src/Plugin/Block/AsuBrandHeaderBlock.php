@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Cache\Cache;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
 
 /**
@@ -71,7 +72,7 @@ class AsuBrandHeaderBlock extends BlockBase {
         // break for some reason. See also JS solve we have as a backup for
         // when Pantheon strips cookies, in asu_brand.header.js.
         $props['userName'] = isset($_COOKIE['SSONAME']) ? Html::escape($_COOKIE['SSONAME']) : t('You are logged in');
-      } else { // Force header to match Drupal login state even if there's a SSO session.
+      } else { // Force header to match Drupal login state even if there's an SSO session.
         $props['loggedIn'] = FALSE;
         $props['userName'] = '';
       }
@@ -182,8 +183,7 @@ class AsuBrandHeaderBlock extends BlockBase {
       '#type' => 'textfield',
       '#title' => $this->t('Site name'),
       '#description' => $this->t('Site title to appear in the header.'),
-      '#default_value' => isset($config['asu_brand_header_block_title']) ?
-        $config['asu_brand_header_block_title'] : \Drupal::config('system.site')->get('name'),
+      '#default_value' => $config['asu_brand_header_block_title'] ?? \Drupal::config('system.site')->get('name'),
       '#required' => TRUE
     ];
     $form['asu_brand_header_block_base_url'] = [
@@ -237,16 +237,14 @@ class AsuBrandHeaderBlock extends BlockBase {
       '#type' => 'textfield',
       '#title' => $this->t('Parent unit name'),
       '#description' => $this->t('Optional. Name of the parent unit.'),
-      '#default_value' => isset($config['asu_brand_header_block_parent_org']) ?
-        $config['asu_brand_header_block_parent_org'] : '',
+      '#default_value' => $config['asu_brand_header_block_parent_org'] ?? '',
       '#required' => FALSE
     ];
     $form['asu_brand_header_block_parent_org_url'] = [
-      '#type' => 'url',
+      '#type' => 'textfield',
       '#title' => $this->t('Parent Department URL'),
-      '#description' => $this->t('Optional. URL of the parent unit.'),
-      '#default_value' => isset($config['asu_brand_header_block_parent_org_url']) ?
-        $config['asu_brand_header_block_parent_org_url'] : '',
+      '#description' => $this->t('Optional. Absolute or relative URL of the parent unit.'),
+      '#default_value' => $config['asu_brand_header_block_parent_org_url'] ?? '',
       '#required' => FALSE
     ];
     $form['asu_brand_header_block_sync_session'] = [
@@ -256,23 +254,20 @@ class AsuBrandHeaderBlock extends BlockBase {
         status synced with the users\'s Drupal session. If disabled, the header
         will reflect the user\'s single-sign on status and they may become
         confused about whether they are logged in or not.'),
-      '#default_value' => isset($config['asu_brand_header_block_sync_session']) ?
-        $config['asu_brand_header_block_sync_session'] : 1,
+      '#default_value' => $config['asu_brand_header_block_sync_session'] ?? 1,
     ];
     $form['asu_brand_header_block_menu_enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Insert menu into header'),
       '#description' => $this->t('Insert a site menu into the ASU header and display it responsively. Important note: the first enabled menu link will always be treated as the home menu link and will be converted into a home icon. To change which menu link is used as home, reorder your menu links.'),
-      '#default_value' => isset($config['asu_brand_header_block_menu_enabled']) ?
-        $config['asu_brand_header_block_menu_enabled'] : 1,
+      '#default_value' => $config['asu_brand_header_block_menu_enabled'] ?? 1,
     ];
     $form['asu_brand_header_block_menu_name'] = [
       '#type' => 'select',
       '#title' => $this->t('Menu to insert'),
       '#description' => $this->t('Select the menu to insert.'),
       '#options' => $menu_options,
-      '#default_value' => isset($config['asu_brand_header_block_menu_name']) ?
-        $config['asu_brand_header_block_menu_name'] : 'main',
+      '#default_value' => $config['asu_brand_header_block_menu_name'] ?? 'main',
       '#states' => array(
         // Display this field when the menu is enabled.
         'visible' => array(
@@ -286,8 +281,7 @@ class AsuBrandHeaderBlock extends BlockBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Expand on hover'),
       '#description' => $this->t('If enabled, menu dropdowns will expand on hover. Allows for top-level menu items with children to be clickable as navigation destinations.'),
-      '#default_value' => isset($config['asu_brand_header_block_expand_on_hover']) ?
-        $config['asu_brand_header_block_expand_on_hover'] : 0,
+      '#default_value' => $config['asu_brand_header_block_expand_on_hover'] ?? 0,
       '#states' => array(
         // Display this field when the menu is enabled.
         'visible' => array(
@@ -301,29 +295,25 @@ class AsuBrandHeaderBlock extends BlockBase {
       '#type' => 'textfield',
       '#title' => $this->t('Login path'),
       '#description' => $this->t('Login path for the site.'),
-      '#default_value' => isset($config['asu_brand_header_block_login_path']) ?
-        $config['asu_brand_header_block_login_path'] : '/caslogin',
+      '#default_value' => $config['asu_brand_header_block_login_path'] ?? '/caslogin',
       '#required' => TRUE
     ];
     $form['asu_brand_header_block_logout_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Logout path'),
       '#description' => $this->t('Logout path for the site.'),
-      '#default_value' => isset($config['asu_brand_header_block_logout_path']) ?
-        $config['asu_brand_header_block_logout_path'] : '/caslogout',
+      '#default_value' => $config['asu_brand_header_block_logout_path'] ?? '/caslogout',
       '#required' => TRUE
     ];
     $form['asu_brand_header_block_cta1_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Call to action button 1 label'),
-      '#default_value' => isset($config['asu_brand_header_block_cta1_label']) ?
-        $config['asu_brand_header_block_cta1_label'] : '',
+      '#default_value' => $config['asu_brand_header_block_cta1_label'] ?? '',
     ];
     $form['asu_brand_header_block_cta1_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Call to action button 1 URL or path'),
-      '#default_value' => isset($config['asu_brand_header_block_cta1_url']) ?
-        $config['asu_brand_header_block_cta1_url'] : '',
+      '#default_value' => $config['asu_brand_header_block_cta1_url'] ?? '',
       '#states' => array(
         // Require this field when the label is filled.
         'required' => array(
@@ -343,21 +333,18 @@ class AsuBrandHeaderBlock extends BlockBase {
     $form['asu_brand_header_block_cta1_style'] = [
       '#type' => 'select',
       '#title' => $this->t('Call to action button 1 style'),
-      '#default_value' => isset($config['asu_brand_header_block_cta1_style']) ?
-        $config['asu_brand_header_block_cta1_style'] : '',
+      '#default_value' => $config['asu_brand_header_block_cta1_style'] ?? '',
       '#options' => $style_options,
     ];
     $form['asu_brand_header_block_cta2_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Call to action button 2 label'),
-      '#default_value' => isset($config['asu_brand_header_block_cta2_label']) ?
-        $config['asu_brand_header_block_cta2_label'] : '',
+      '#default_value' => $config['asu_brand_header_block_cta2_label'] ?? '',
     ];
     $form['asu_brand_header_block_cta2_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Call to action button 2 URL or path'),
-      '#default_value' => isset($config['asu_brand_header_block_cta2_url']) ?
-        $config['asu_brand_header_block_cta2_url'] : '',
+      '#default_value' => $config['asu_brand_header_block_cta2_url'] ?? '',
       '#states' => array(
         // Require this field when the label is filled.
         'required' => array(
@@ -371,12 +358,27 @@ class AsuBrandHeaderBlock extends BlockBase {
     $form['asu_brand_header_block_cta2_style'] = [
       '#type' => 'select',
       '#title' => $this->t('Call to action button 2 style'),
-      '#default_value' => isset($config['asu_brand_header_block_cta2_style']) ?
-        $config['asu_brand_header_block_cta2_style'] : '',
+      '#default_value' => $config['asu_brand_header_block_cta2_style'] ?? '',
       '#options' => $style_options,
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockValidate($form, FormStateInterface $form_state) {
+    $url = $form_state->getValue('asu_brand_header_block_parent_org_url');
+    if (empty($url)) {
+      return $form_state;
+    } else {
+      $abs = strpos($url, '://') !== FALSE;
+      if (UrlHelper::isValid($url, $abs) !== TRUE) {
+        $form_state->setErrorByName('asu_brand_header_block_parent_org_url', $this->t('Parent Org URL is not a valid URL.'));
+      }
+    }
+    return $form_state;
   }
 
   /**
