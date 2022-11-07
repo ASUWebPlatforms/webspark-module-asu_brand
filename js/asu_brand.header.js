@@ -4,7 +4,7 @@
     attach: function (context, settings) {
 
       // If the asu brand header is on the page...
-      var headerElement = document.getElementById("headerContainer");
+      var headerElement = document.getElementById("ws2HeaderContainer");
       if (headerElement) {
 
         // If toolbar detected, add compatibilty classes for spacing.
@@ -86,7 +86,7 @@
         // page, check if the class change was made by a toolbar change and
         // apply our CSS class names to adapt dynamically if so.
 
-        var headerElement = document.getElementById("headerContainer");
+        var headerElement = document.getElementById("ws2HeaderContainer");
         if (headerElement) {
           var classSuffix = "";
           var vertSuffix = "-vertical";
@@ -127,7 +127,7 @@
 
   // Initialize the asu_brand component-header header.
   AsuHeader.initGlobalHeader({
-    targetSelector: '#headerContainer',
+    targetSelector: '#ws2HeaderContainer',
     props: props
   });
 
@@ -137,7 +137,7 @@
     window.addEventListener("DOMContentLoaded", event => {
       // Initialize cookie consent banner
       AsuCookieConsent.initCookieConsent({
-        targetSelector: "#cookieConsentContainer",
+        targetSelector: "#ws2CookieConsentContainer",
         props: {
           enableCookieConsent: true,
           expirationTime: 90, // Number of days to expire the consent
@@ -153,7 +153,7 @@
   // destination is supported. See Drupal CAS docs notes on this:
   // https://www.drupal.org/docs/contributed-modules/cas/introduction-setup#s-logging-in
   // Must fire after header is initialized.
-  var headerElement = document.getElementById("headerContainer");
+  var headerElement = document.getElementById("ws2HeaderContainer");
   if (headerElement) {
     // Get login anchor element.
     var headerLoginElement = headerElement.querySelector(".login-status a");
