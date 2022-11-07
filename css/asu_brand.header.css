@@ -10,10 +10,10 @@ body {
 }
 
 /* If #toolbar_administration our js adds asu_brand-toolbar-*-compat classes */
-#headerContainer.asu-brand-toolbar-header-tray-open-compat header {
+#ws2HeaderContainer.asu-brand-toolbar-header-tray-open-compat header {
   top:79px;
 }
-#headerContainer.asu-brand-toolbar-header-tray-closed-compat header {
+#ws2HeaderContainer.asu-brand-toolbar-header-tray-closed-compat header {
   top:39px;
 }
 body.toolbar-horizontal.toolbar-tray-open {
@@ -23,8 +23,8 @@ body.toolbar-horizontal {
   padding-top:144px !important; /* Adjust space below header */
 }
 /* vertical variations */
-#headerContainer.asu-brand-toolbar-header-tray-open-compat-vertical header,
-#headerContainer.asu-brand-toolbar-header-tray-closed-compat-vertical header {
+#ws2HeaderContainer.asu-brand-toolbar-header-tray-open-compat-vertical header,
+#ws2HeaderContainer.asu-brand-toolbar-header-tray-closed-compat-vertical header {
   top:39px;
   z-index: 1200 !important;
 }
@@ -84,7 +84,7 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
   }
 
   /* Guard against css bleeding in from CMS */
-  #headerContainer header .navbar-container ul.navlist li {
+  #ws2HeaderContainer header .navbar-container ul.navlist li {
     max-width: 100% !important;
   }
 
@@ -101,11 +101,11 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
     min-height: calc(100vh - 364px) !important;
   }
 
-  #headerContainer header .shadow.mobile-open {
+  #ws2HeaderContainer header .shadow.mobile-open {
     position: fixed;
     bottom: 174px !important;
   }
-  #headerContainer header .universal-nav.mobile-open {
+  #ws2HeaderContainer header .universal-nav.mobile-open {
     position: fixed;
     bottom: 0px;
   }
@@ -115,7 +115,7 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
 @media only screen and (max-width: 609px) {
 
   /* Admin menu collapses on scroll, so adjust top for scrolled state */
-  #headerContainer header.scrolled {
+  #ws2HeaderContainer header.scrolled {
     top: 0 !important;
   }
 
@@ -142,7 +142,7 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
   }
 
   /* shadow rules if admin toolbar */
-  body.toolbar-vertical #headerContainer header .shadow.mobile-open {
+  body.toolbar-vertical #ws2HeaderContainer header .shadow.mobile-open {
     bottom: 194px !important;
   }
 
@@ -160,24 +160,24 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
     min-height: calc(100vh - 346px) !important;
   }
 
-  #headerContainer header .shadow.mobile-open {
+  #ws2HeaderContainer header .shadow.mobile-open {
     bottom: 194px !important;
   }
 
 }
 
 @media screen and (max-width: 1260px) {
-  #headerContainer .container-xl .navbar-toggler {
+  #ws2HeaderContainer .container-xl .navbar-toggler {
     padding: 0.25rem 0.5rem;
   }
 
-  body.toolbar-horizontal #headerContainer .content-container,
-  body.toolbar-vertical #headerContainer .content-container {
+  body.toolbar-horizontal #ws2HeaderContainer .content-container,
+  body.toolbar-vertical #ws2HeaderContainer .content-container {
     min-height: calc(100vh - 319px);
     max-height: calc(100vh - 319px);
   }
 
-  body.toolbar-horizontal.toolbar-tray-open #headerContainer .content-container {
+  body.toolbar-horizontal.toolbar-tray-open #ws2HeaderContainer .content-container {
     min-height: calc(100vh - 360px);
     max-height: calc(100vh - 360px);
   }
@@ -185,7 +185,7 @@ body .ui-dialog.ui-widget.ui-widget-content.media-library-widget-modal {
 }
 
 @media screen and (min-width: 1261px) {
-  #headerContainer a.home::after {
+  #ws2HeaderContainer a.home::after {
     top: 0.55rem
   }
 }
