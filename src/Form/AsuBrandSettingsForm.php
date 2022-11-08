@@ -123,6 +123,9 @@ class AsuBrandSettingsForm extends ConfigFormBase {
     // Note: Use asu_brand. prefix when handling config values, but not with
     // form_state versions of those values.
 
+    // Removing https:// and http:// for Local Search URL.
+    $local_search_url = preg_replace("(^https?://)", "", $form_state->getValue('asu_brand_local_search_url'));
+
     // Retrieve the configuration.
     $this->configFactory->getEditable(static::SETTINGS)
       // Set the submitted configurations on our config.
@@ -130,7 +133,7 @@ class AsuBrandSettingsForm extends ConfigFormBase {
       ->set('asu_brand.asu_brand_gtm_enabled', $form_state->getValue('asu_brand_gtm_enabled'))
       ->set('asu_brand.asu_brand_extra_gtm_id', $form_state->getValue('asu_brand_extra_gtm_id'))
       ->set('asu_brand.asu_brand_search_url', $form_state->getValue('asu_brand_search_url'))
-      ->set('asu_brand.asu_brand_local_search_url', $form_state->getValue('asu_brand_local_search_url'))
+      ->set('asu_brand.asu_brand_local_search_url', $local_search_url)
       ->save();
 
     parent::submitForm($form, $form_state);
