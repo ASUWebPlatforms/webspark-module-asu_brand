@@ -1,10 +1,14 @@
 .history/
 .cache
-node_modules/.cache
 
+# NodeJS projects
+## Top-level
+node_modules/.cache
 node_modules/*
 !node_modules/@asu-design-system
 node_modules/@asu-design-system/*
+
+## Per project - asu_brand
 !node_modules/@asu-design-system/component-cookie-consent/
 node_modules/@asu-design-system/component-cookie-consent/*
 !node_modules/@asu-design-system/component-cookie-consent/dist
@@ -12,6 +16,14 @@ node_modules/@asu-design-system/component-cookie-consent/*
 node_modules/@asu-design-system/component-header/*
 !node_modules/@asu-design-system/component-header/dist
 
+# Drupal/external libraries
 /vendor/
 
+# PHPStorm (IDE) configurations
 .idea/
+
+# Config management script output
+/config/_config_changes.diff
+/config/**/_diff_commands.bash
+*APPLY.patch
+.DS_Store*
