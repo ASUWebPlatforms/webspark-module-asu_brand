@@ -585,7 +585,7 @@ class AsuBrandHeaderBlock extends BlockBase {
   protected function getPathImgFolder() {
     $module_handler = \Drupal::service('module_handler');
     $path_module = $module_handler->getModule('asu_brand')->getPath();
-    $appPathFolder = base_path() . $path_module . '/node_modules/@asu-design-system/component-header/dist/assets/img';
+    $appPathFolder = base_path() . $path_module . '/node_modules/@asu/component-header/dist/assets/img';
     return $appPathFolder;
   }
 }
