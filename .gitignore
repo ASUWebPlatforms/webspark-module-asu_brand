@@ -23,7 +23,7 @@ node_modules/@asu-design-system/component-header/*
 .idea/
 
 # Config management script output
-/config/_config_changes.diff
+/config/_*changes.diff
 /config/**/_diff_commands.bash
-*APPLY.patch
+*APPLICABLE.patch
 .DS_Store*
