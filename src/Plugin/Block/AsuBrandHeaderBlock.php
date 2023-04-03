@@ -113,13 +113,10 @@ class AsuBrandHeaderBlock extends BlockBase {
       'brandLink' => 'https://www.asu.edu',
     ];
     // Search settings.
-    $search_config = \Drupal::config('asu_brand.settings');
-    $props['searchUrl'] = $search_config->get('asu_brand.asu_brand_search_url');
-    $local_search_url = $search_config->get('asu_brand.asu_brand_local_search_url');
-    $props['site'] = $local_search_url ?? \Drupal::request()->getHost();
-    // "opt-out" for use by ASU CMS, Integrated Search or with special
-    // dispensation.
-    if ($props['site'] == "opt-out") {
+    (array)$urls = \Drupal::service('asu_brand.helper_functions')->getSearchHosts();
+    $props['searchUrl'] = $urls['asu_search_url'];
+    $props['site'] = $urls['url_host'];
+    if ($props['site'] === '') { // "opt-out" was selected
       unset($props['site']);
     }
 
