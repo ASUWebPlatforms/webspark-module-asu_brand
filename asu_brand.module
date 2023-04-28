@@ -96,7 +96,6 @@ function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
   if ($form_id === 'block_form' && $form['settings']['provider']['#value'] === "asu_brand") {
     $form['settings']['label']['#title'] = t("Block admin title");
     $form['settings']['label']['#disabled'] = TRUE;
-    $form['settings']['label']['#access'] = FALSE;
     $form['settings']['label']['#value'] = 'ASU brand header';
     $form['settings']['label_display']['#title'] = t("Display block admin title");
     $form['settings']['label_display']['#value'] = FALSE;
@@ -106,6 +105,7 @@ function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
     $form['settings']['admin_label']['#title'] = 'ASU Brand header';
     $form['region']['#weight'] = 10;
     $form['id']['#weight'] = 11;
+    $form['#attached']['library'][] = 'asu_brand/block__system_main_block';
   }
 
   // Menu link edit forms for content links.
