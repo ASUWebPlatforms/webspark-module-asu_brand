@@ -110,7 +110,7 @@ class AsuBrandSettingsForm extends ConfigFormBase {
       '#description' => $this->t('If empty, your current site\'s base URL will be used. Optionally, you can override
          with the URL of your choice to be used for scoping local search. Use the format: yourdomain.asu.edu'),
     ];
-
+    $form['#attached']['library'][] = 'asu_brand/';
     return parent::buildForm($form, $form_state);
   }
 

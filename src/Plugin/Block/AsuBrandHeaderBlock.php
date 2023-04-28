@@ -1,4 +1,6 @@
-<?php
+<?php /** @noinspection SqlDialectInspection */
+
+/** @noinspection SqlNoDataSourceInspection */
 
 namespace Drupal\asu_brand\Plugin\Block;
 
@@ -34,7 +36,7 @@ class AsuBrandHeaderBlock extends BlockBase {
 
     // Rally props to pass to JS as drupalSettings.
     $props = [];
-    $props['baseUrl'] = $this->getBaseUrl();
+    $props['baseUrl'] = $config['asu_brand_header_block_base_url'] ?? $this->getBaseUrl();
     $props['title'] = $config['asu_brand_header_block_title'];
     $props['parentOrg'] = $config['asu_brand_header_block_parent_org'];
     $props['parentOrgUrl'] = $config['asu_brand_header_block_parent_org_url'];
@@ -181,90 +183,64 @@ class AsuBrandHeaderBlock extends BlockBase {
     // Config for this instance.
     $config = $this->getConfiguration();
 
-    $form['asu_brand_header_block_title'] = [
+    // Titles (Main, Parent)
+    $form['titles'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Site titles'),
+      '#open' => TRUE,
+      '#collapsible' => FALSE
+    );
+    $form['titles']['asu_brand_header_block_title'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Site name'),
-      '#description' => $this->t('Site title to appear in the header.'),
+      '#title' => $this->t('Site title'),
+      '#description' => $this->t('Main site title in white ASU header.'),
       '#default_value' => $config['asu_brand_header_block_title'] ?? \Drupal::config('system.site')->get('name'),
       '#required' => TRUE
     ];
-    $form['asu_brand_header_block_base_url'] = [
+    $form['titles']['asu_brand_header_block_base_url'] = [
       '#type' => 'url',
       '#title' => $this->t('Site URL'),
-      '#description' => $this->t('URL of the site.'),
-      '#default_value' => $this->getBaseUrl(),
+      '#description' => $this->t("URL of this site's home page."),
+      '#default_value' => $config['asu_brand_header_block_base_url'] ?? $this->getBaseUrl(),
       '#required' => TRUE
     ];
-
-    $form['partner'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Partner'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-      '#description' => $this->t('Important: Use of the Partner Header must first be approved by the ASU Marketing Hub. Do not enable if you have not first received approval.'),
-    ];
-
-    $form['partner']['asu_brand_header_block_partner_enabled'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Is Partner?'),
-      '#default_value' => !empty($config['asu_brand_header_block_partner_enabled']) ?
-        $config['asu_brand_header_block_partner_enabled'] : 0,
-    ];
-
-    $form['partner']['asu_brand_header_block_partner_url'] = [
-      '#type' => 'url',
-      '#title' => $this->t('Partner URL'),
-      '#description' => $this->t('URL of the partner unit.'),
-      '#default_value' => !empty($config['asu_brand_header_block_partner_url']) ?
-        $config['asu_brand_header_block_partner_url'] : '',
-      '#required' => FALSE
-    ];
-    $form['partner']['asu_brand_header_block_partner_logo_url'] = [
-      '#type' => 'url',
-      '#title' => $this->t('Partner Logo URL'),
-      '#description' => $this->t('URL of the partner logo image.'),
-      '#default_value' => !empty($config['asu_brand_header_block_partner_logo_url']) ?
-        $config['asu_brand_header_block_partner_logo_url'] : '',
-      '#required' => FALSE
-    ];
-    $form['partner']['asu_brand_header_block_partner_logo_alt'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Partner Logo Alt'),
-      '#description' => $this->t('The ALT attribute of the partner logo image.'),
-      '#default_value' => !empty($config['asu_brand_header_block_partner_logo_alt']) ?
-        $config['asu_brand_header_block_partner_logo_alt'] : '',
-      '#required' => FALSE
-    ];
-    $form['asu_brand_header_block_parent_org'] = [
+    $form['titles']['asu_brand_header_block_parent_org'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Parent unit name'),
-      '#description' => $this->t('Optional. Name of the parent unit.'),
+      '#description' => $this->t("(optional) Name of the ASU parent unit. Will appear above the site title. Leave blank if none."),
       '#default_value' => $config['asu_brand_header_block_parent_org'] ?? '',
-      '#required' => FALSE
+      '#states' => array(
+        'required' => array(
+          ':input[name="settings[titles][asu_brand_header_block_parent_org_url]"]' => array(
+            'filled' => TRUE,
+          ),
+        ),
+      ),
     ];
-    $form['asu_brand_header_block_parent_org_url'] = [
+    $form['titles']['asu_brand_header_block_parent_org_url'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Parent Department URL'),
-      '#description' => $this->t('Optional. Absolute or relative URL of the parent unit.'),
+      '#title' => $this->t('Parent department URL'),
+      '#description' => $this->t('Absolute or relative URL of the parent unit. Leave blank if none.'),
       '#default_value' => $config['asu_brand_header_block_parent_org_url'] ?? '',
-      '#required' => FALSE
     ];
-    $form['asu_brand_header_block_sync_session'] = [
+
+
+    $form['menus'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Menu settings'),
+      '#open' => TRUE,
+      '#collapsible' => FALSE
+    );
+    // Menu settings
+    $form['menus']['asu_brand_header_block_menu_enabled'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Sync login status with Drupal session'),
-      '#description' => $this->t('Recommended. Keeps the header\'s login/out
-        status synced with the users\'s Drupal session. If disabled, the header
-        will reflect the user\'s single-sign on status and they may become
-        confused about whether they are logged in or not.'),
-      '#default_value' => $config['asu_brand_header_block_sync_session'] ?? 1,
-    ];
-    $form['asu_brand_header_block_menu_enabled'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Insert menu into header'),
-      '#description' => $this->t('Insert a site menu into the ASU header and display it responsively. Important note: the first enabled menu link will always be treated as the home menu link and will be converted into a home icon. To change which menu link is used as home, reorder your menu links.'),
+      '#title' => $this->t('Insert menu into ASU header'),
+      '#description' => $this->t('Insert a site menu into the ASU header and display it responsively. Important note: the first enabled' .
+        ' menu link will always be treated as the home menu link and will be converted into a home icon. To change which menu link' .
+        ' is used as home, reorder your menu links.'),
       '#default_value' => $config['asu_brand_header_block_menu_enabled'] ?? 1,
     ];
-    $form['asu_brand_header_block_menu_name'] = [
+    $form['menus']['asu_brand_header_block_menu_name'] = [
       '#type' => 'select',
       '#title' => $this->t('Menu to insert'),
       '#description' => $this->t('Select the menu to insert.'),
@@ -279,7 +255,7 @@ class AsuBrandHeaderBlock extends BlockBase {
         ),
       ),
     ];
-    $form['asu_brand_header_block_expand_on_hover'] = [
+    $form['menus']['asu_brand_header_block_expand_on_hover'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Expand on hover'),
       '#description' => $this->t('If enabled, menu dropdowns will expand on hover. Allows for top-level menu items with children to be clickable as navigation destinations.'),
@@ -293,75 +269,167 @@ class AsuBrandHeaderBlock extends BlockBase {
         ),
       ),
     ];
-    $form['asu_brand_header_block_login_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Login path'),
-      '#description' => $this->t('Login path for the site.'),
-      '#default_value' => $config['asu_brand_header_block_login_path'] ?? '/caslogin',
-      '#required' => TRUE
+
+    // CTA buttons
+    $style_options = [
+      'gold' => 'Gold',
+      'maroon' => 'Maroon',
+      'light' => 'Gray 2',
+      'dark' => 'Gray 7',
     ];
-    $form['asu_brand_header_block_logout_path'] = [
+    $form['cta'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Call To Action buttons'),
+      '#description' => 'If desired, add one or two CTA buttons to the right hand side of the main site menu.',
+      '#open' => FALSE,
+      '#collapsible' => TRUE
+    );
+    // Button 1
+    $form['cta']['cta1'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Button 1'),
+      '#open' => TRUE,
+      '#collapsible' => FALSE
+    );
+    $form['cta']['cta1']['asu_brand_header_block_cta1_label'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Logout path'),
-      '#description' => $this->t('Logout path for the site.'),
-      '#default_value' => $config['asu_brand_header_block_logout_path'] ?? '/caslogout',
-      '#required' => TRUE
-    ];
-    $form['asu_brand_header_block_cta1_label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Call to action button 1 label'),
+      '#title' => $this->t('Text'),
       '#default_value' => $config['asu_brand_header_block_cta1_label'] ?? '',
     ];
-    $form['asu_brand_header_block_cta1_url'] = [
+    $form['cta']['cta1']['asu_brand_header_block_cta1_url'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Call to action button 1 URL or path'),
+      '#title' => $this->t('URL target'),
       '#default_value' => $config['asu_brand_header_block_cta1_url'] ?? '',
       '#states' => array(
         // Require this field when the label is filled.
         'required' => array(
-          ':input[name="settings[asu_brand_header_block_cta1_label]"]' => array(
+          ':input[name="settings[cta][cta1][asu_brand_header_block_cta1_label]"]' => array(
             'filled' => TRUE,
           ),
         ),
       ),
     ];
-
-    $style_options = [
-        'gold' => 'Gold',
-        'maroon' => 'Maroon',
-        'light' => 'Gray 2',
-        'dark' => 'Gray 7',
-      ];
-    $form['asu_brand_header_block_cta1_style'] = [
+    $form['cta']['cta1']['asu_brand_header_block_cta1_style'] = [
       '#type' => 'select',
-      '#title' => $this->t('Call to action button 1 style'),
+      '#title' => $this->t('Style'),
       '#default_value' => $config['asu_brand_header_block_cta1_style'] ?? '',
       '#options' => $style_options,
     ];
-    $form['asu_brand_header_block_cta2_label'] = [
+    // Button 2
+    $form['cta']['cta2'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Button 2'),
+      '#open' => TRUE,
+      '#collapsible' => FALSE
+    );
+    $form['cta']['cta2']['asu_brand_header_block_cta2_label'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Call to action button 2 label'),
+      '#title' => $this->t('Text'),
       '#default_value' => $config['asu_brand_header_block_cta2_label'] ?? '',
     ];
-    $form['asu_brand_header_block_cta2_url'] = [
+    $form['cta']['cta2']['asu_brand_header_block_cta2_url'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Call to action button 2 URL or path'),
+      '#title' => $this->t('URL target'),
       '#default_value' => $config['asu_brand_header_block_cta2_url'] ?? '',
       '#states' => array(
         // Require this field when the label is filled.
         'required' => array(
-          ':input[name="settings[asu_brand_header_block_cta2_label]"]' => array(
+          ':input[name="settings[cta][cta2][asu_brand_header_block_cta2_label]"]' => array(
             'filled' => TRUE,
           ),
         ),
       ),
     ];
-
-    $form['asu_brand_header_block_cta2_style'] = [
+    $form['cta']['cta2']['asu_brand_header_block_cta2_style'] = [
       '#type' => 'select',
-      '#title' => $this->t('Call to action button 2 style'),
+      '#title' => $this->t('Style'),
       '#default_value' => $config['asu_brand_header_block_cta2_style'] ?? '',
       '#options' => $style_options,
+    ];
+
+    // Partner header
+    $form['partner'] = [
+      '#type' => 'details',
+      '#title' => $this->t('ASU Partner Header'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#description' => $this->t('<strong>Important</strong>: Use of the Partner Header must first be approved by the ASU Marketing Hub. Do not enable if you have not first received approval. Otherwise, leave this section blank.'),
+    ];
+    $form['partner']['asu_brand_header_block_partner_enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Is Partner?'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_enabled']) ?
+        $config['asu_brand_header_block_partner_enabled'] : 0,
+    ];
+    $form['partner']['asu_brand_header_block_partner_url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Partner URL'),
+      '#description' => $this->t('URL of the partner unit. Absolute URLs only.'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_url']) ?
+        $config['asu_brand_header_block_partner_url'] : '',
+      '#states' => [
+        'required' => [
+          ':input[name="settings[partner][asu_brand_header_block_partner_enabled]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    $form['partner']['asu_brand_header_block_partner_logo_url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Partner Logo URL'),
+      '#description' => $this->t('URL of the partner logo image. Absolute URLs only.'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_logo_url']) ?
+        $config['asu_brand_header_block_partner_logo_url'] : '',
+      '#states' => [
+        'required' => [
+          ':input[name="settings[partner][asu_brand_header_block_partner_enabled]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    $form['partner']['asu_brand_header_block_partner_logo_alt'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Partner Logo Alt'),
+      '#description' => $this->t('The ALT attribute of the partner logo image.'),
+      '#default_value' => !empty($config['asu_brand_header_block_partner_logo_alt']) ?
+        $config['asu_brand_header_block_partner_logo_alt'] : '',
+      '#states' => [
+        'required' => [
+          ':input[name="settings[partner][asu_brand_header_block_partner_enabled]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+
+    // Login URLs
+    $form['logins'] = array(
+      '#type' => 'details',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#description' => $this->t('Menu routing paths that trigger logons/logoffs (usually CAS-related in Webspark). ' .
+      'Do not change these settings unless you know what you are doing.'),
+      '#title' => $this->t('Login Paths')
+    );
+    $form['logins']['asu_brand_header_block_login_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Login path'),
+      '#default_value' => $config['asu_brand_header_block_login_path'] ?? '/caslogin',
+      '#description' => $this->t('Use /caslogin as the recommended CAS default'),
+      '#required' => TRUE
+    ];
+    $form['logins']['asu_brand_header_block_logout_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Logout path'),
+      '#default_value' => $config['asu_brand_header_block_logout_path'] ?? '/caslogout',
+      '#description' => $this->t("Use /caslogout as the recommended CAS default"),
+      '#required' => TRUE
+    ];
+    $form['logins']['asu_brand_header_block_sync_session'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Sync login status with Drupal session'),
+      '#description' => $this->t('Recommended. Keeps the header\'s login/out
+        status synced with the users\'s Drupal session. If disabled, the header
+        will reflect the user\'s single-sign on status and they may become
+        confused about whether they are logged in or not.'),
+      '#default_value' => $config['asu_brand_header_block_sync_session'] ?? 1,
     ];
 
     return $form;
@@ -388,13 +456,37 @@ class AsuBrandHeaderBlock extends BlockBase {
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
-
     $values = $form_state->getValues();
 
     $this->configuration['asu_brand_header_block_title'] =
-      $values['asu_brand_header_block_title'];
+      $values['titles']['asu_brand_header_block_title'];
     $this->configuration['asu_brand_header_block_base_url'] =
-      $values['asu_brand_header_block_base_url'];
+      $values['titles']['asu_brand_header_block_base_url'];
+    $this->configuration['asu_brand_header_block_parent_org'] =
+      $values['titles']['asu_brand_header_block_parent_org'];
+    $this->configuration['asu_brand_header_block_parent_org_url'] =
+      $values['titles']['asu_brand_header_block_parent_org_url'];
+
+    $this->configuration['asu_brand_header_block_cta1_label'] =
+      $values['cta']['cta1']['asu_brand_header_block_cta1_label'];
+    $this->configuration['asu_brand_header_block_cta1_url'] =
+      $values['cta']['cta1']['asu_brand_header_block_cta1_url'];
+    $this->configuration['asu_brand_header_block_cta1_style'] =
+      $values['cta']['cta1']['asu_brand_header_block_cta1_style'];
+    $this->configuration['asu_brand_header_block_cta2_label'] =
+      $values['cta']['cta2']['asu_brand_header_block_cta2_label'];
+    $this->configuration['asu_brand_header_block_cta2_url'] =
+      $values['cta']['cta2']['asu_brand_header_block_cta2_url'];
+    $this->configuration['asu_brand_header_block_cta2_style'] =
+      $values['cta']['cta2']['asu_brand_header_block_cta2_style'];
+
+    $this->configuration['asu_brand_header_block_menu_enabled'] =
+      $values['menus']['asu_brand_header_block_menu_enabled'];
+    $this->configuration['asu_brand_header_block_menu_name'] =
+      $values['menus']['asu_brand_header_block_menu_name'];
+    $this->configuration['asu_brand_header_block_expand_on_hover'] =
+      $values['menus']['asu_brand_header_block_expand_on_hover'];
+
     $this->configuration['asu_brand_header_block_partner_enabled'] =
       $values['partner']['asu_brand_header_block_partner_enabled'];
     $this->configuration['asu_brand_header_block_partner_url'] =
@@ -403,34 +495,14 @@ class AsuBrandHeaderBlock extends BlockBase {
       $values['partner']['asu_brand_header_block_partner_logo_url'];
     $this->configuration['asu_brand_header_block_partner_logo_alt'] =
       $values['partner']['asu_brand_header_block_partner_logo_alt'];
-    $this->configuration['asu_brand_header_block_parent_org'] =
-      $values['asu_brand_header_block_parent_org'];
-    $this->configuration['asu_brand_header_block_parent_org_url'] =
-      $values['asu_brand_header_block_parent_org_url'];
-    $this->configuration['asu_brand_header_block_sync_session'] =
-      $values['asu_brand_header_block_sync_session'];
-    $this->configuration['asu_brand_header_block_menu_enabled'] =
-      $values['asu_brand_header_block_menu_enabled'];
-    $this->configuration['asu_brand_header_block_menu_name'] =
-      $values['asu_brand_header_block_menu_name'];
-    $this->configuration['asu_brand_header_block_expand_on_hover'] =
-      $values['asu_brand_header_block_expand_on_hover'];
+
     $this->configuration['asu_brand_header_block_login_path'] =
-      $values['asu_brand_header_block_login_path'];
+      $values['logins']['asu_brand_header_block_login_path'];
     $this->configuration['asu_brand_header_block_logout_path'] =
-      $values['asu_brand_header_block_logout_path'];
-    $this->configuration['asu_brand_header_block_cta1_label'] =
-      $values['asu_brand_header_block_cta1_label'];
-    $this->configuration['asu_brand_header_block_cta1_url'] =
-      $values['asu_brand_header_block_cta1_url'];
-    $this->configuration['asu_brand_header_block_cta1_style'] =
-      $values['asu_brand_header_block_cta1_style'];
-    $this->configuration['asu_brand_header_block_cta2_label'] =
-      $values['asu_brand_header_block_cta2_label'];
-    $this->configuration['asu_brand_header_block_cta2_url'] =
-      $values['asu_brand_header_block_cta2_url'];
-    $this->configuration['asu_brand_header_block_cta2_style'] =
-      $values['asu_brand_header_block_cta2_style'];
+      $values['logins']['asu_brand_header_block_logout_path'];
+    $this->configuration['asu_brand_header_block_sync_session'] =
+      $values['logins']['asu_brand_header_block_sync_session'];
+
   }
 
   /**
