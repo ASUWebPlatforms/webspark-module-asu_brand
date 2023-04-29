@@ -94,18 +94,18 @@ function asu_brand_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
 
   // Header block form UX improvements
   if ($form_id === 'block_form' && $form['settings']['provider']['#value'] === "asu_brand") {
-    $form['settings']['label']['#title'] = t("Block admin title");
-    $form['settings']['label']['#disabled'] = TRUE;
-    $form['settings']['label']['#value'] = 'ASU brand header';
+    $form['region']['#weight'] = 0;
+    $form['region']['#description'] = $form['region']['#description'] . " If unsure, select Header.";
+    $form['#attached']['library'][] = 'asu_brand/block__system_main_block';
+    // Form body
+    $form['settings']['admin_label']['#access'] = FALSE;
+    $form['settings']['admin_label']['#weight'] = -2;
+    $form['settings']['label']['#weight'] = -1;
+    // Disable ability to show ASU Brand header titles above blocks
     $form['settings']['label_display']['#title'] = t("Display block admin title");
     $form['settings']['label_display']['#value'] = FALSE;
     $form['settings']['label_display']['#disabled'] = TRUE;
     $form['settings']['label_display']['#access'] = FALSE;
-    $form['settings']['label_display']['#description'] = t("Do not display the block admin title to visitors.");
-    $form['settings']['admin_label']['#title'] = 'ASU Brand header';
-    $form['region']['#weight'] = 10;
-    $form['id']['#weight'] = 11;
-    $form['#attached']['library'][] = 'asu_brand/block__system_main_block';
   }
 
   // Menu link edit forms for content links.
